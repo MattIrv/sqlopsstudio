@@ -5,7 +5,7 @@
 'use strict';
 
 import { ExtensionContext, workspace, window, OutputChannel, languages } from 'vscode';
-import { SqlOpsDataClient, LanguageClientOptions } from 'dataprotocol-client';
+import { SqlOpsDataClient, ClientOptions } from 'dataprotocol-client';
 import { CloseAction, ErrorAction, ServerOptions, NotificationHandler, NotificationType, RequestType, TransportKind } from 'vscode-languageclient';
 
 import { VscodeWrapper } from '../controllers/vscodeWrapper';
@@ -329,7 +329,7 @@ export class SqlToolsServiceClient {
 						languageClientHelper.createServerOptions(serverPath, runtimeId) : this.createServerOptions(serverPath);
 
 					// Options to control the language client
-					let clientOptions: LanguageClientOptions = {
+					let clientOptions: ClientOptions = {
 						documentSelector: [SqlToolsServiceClient._constants.languageId],
 						providerId: '',
 						synchronize: {
@@ -405,7 +405,7 @@ export class SqlToolsServiceClient {
 
 	private createLanguageClient(serverOptions: ServerOptions): SqlOpsDataClient {
 		// Options to control the language client
-		let clientOptions: LanguageClientOptions = {
+		let clientOptions: ClientOptions = {
 			documentSelector: [SqlToolsServiceClient._constants.languageId],
 			providerId: SqlToolsServiceClient._constants.providerId,
 			synchronize: {

@@ -191,7 +191,9 @@
     }
   },
   "dependencies": {
-    "extensions-modules": "file:../../extensions-modules"
+    "extensions-modules": "file:../../extensions-modules",
+    "service-downloader": "github:anthonydresser/service-downloader#release",
+    "dataprotocol-client": "github:Microsoft/sqlops-dataprotocolclient#feat/initFeaturesrelease"
   },
   "devDependencies": {
     "vscode": "1.0.1"

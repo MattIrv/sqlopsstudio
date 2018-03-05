@@ -77,10 +77,6 @@ export default class MainController implements vscode.Disposable {
 		return this.createClient(['MicrosoftSqlToolsCredentials.exe', 'MicrosoftSqlToolsCredentials']);
 	}
 
-	private createResourceProviderClient(): Promise<SqlOpsDataClient> {
-		return this.createClient(['SqlToolsResourceProviderService.exe', 'SqlToolsResourceProviderService']);
-	}
-
 	/**
 	 * Initializes the extension
 	 */
@@ -99,19 +95,7 @@ export default class MainController implements vscode.Disposable {
 					{ serviceInstalled: serverResult.installedBeforeInitializing ? 1 : 0 }
 				);
 
-				self.createResourceProviderClient().then(rpClient => {
-					let resourceProvider = new AzureResourceProvider(self._client, rpClient);
-					sqlops.resources.registerResourceProvider({
-						displayName: 'Azure SQL Resource Provider', // TODO Localize
-						id: 'Microsoft.Azure.SQL.ResourceProvider',
-						settings: {
-
-						}
-					}, resourceProvider);
-					Utils.logDebug('resourceProvider registered', MainController._extensionConstants.extensionConfigSectionName);
-				}, error => {
-					Utils.logDebug('Cannot find ResourceProvider executables. error: ' + error, MainController._extensionConstants.extensionConfigSectionName);
-				});
+				let resourceProvider = new AzureResourceProvider();
 
 				self.createCredentialClient().then(credentialClient => {
 					self._credentialStore.languageClient = credentialClient;

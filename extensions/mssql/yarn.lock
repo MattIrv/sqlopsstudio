@@ -333,9 +333,9 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-"dataprotocol-client@github:Microsoft/sqlops-dataprotocolclient#0.1.2":
+"dataprotocol-client@github:Microsoft/sqlops-dataprotocolclient#feat/initFeaturesrelease":
   version "0.1.0"
-  resolved "https://codeload.github.com/Microsoft/sqlops-dataprotocolclient/tar.gz/524cfc580e93f7ed85573e5291b5ca69fbda72f3"
+  resolved "https://codeload.github.com/Microsoft/sqlops-dataprotocolclient/tar.gz/df58d06494422aa412e486c67898d541465c8337"
   dependencies:
     vscode-languageclient "3.5.0"
 
@@ -538,7 +538,7 @@ extend@^3.0.0, extend@~3.0.0, extend@~3.0.1:
 "extensions-modules@file:../../extensions-modules":
   version "0.1.0"
   dependencies:
-    dataprotocol-client "github:Microsoft/sqlops-dataprotocolclient#0.1.2"
+    dataprotocol-client "github:Microsoft/sqlops-dataprotocolclient#feat/initFeaturesrelease"
     decompress "^4.2.0"
     fs-extra-promise "^1.0.1"
     http-proxy-agent "^2.0.0"
@@ -1004,6 +1004,13 @@ http-signature@~1.2.0:
 https-proxy-agent@^2.1.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-2.1.1.tgz#a7ce4382a1ba8266ee848578778122d491260fd9"
+  dependencies:
+    agent-base "^4.1.0"
+    debug "^3.1.0"
+
+https-proxy-agent@^2.1.1:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-2.2.0.tgz#7fbba856be8cd677986f42ebd3664f6317257887"
   dependencies:
     agent-base "^4.1.0"
     debug "^3.1.0"
@@ -1900,6 +1907,15 @@ seek-bzip@^1.0.5:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.5.0.tgz#dc4bbc7a6ca9d916dee5d43516f0092b58f7b8ab"
 
+"service-downloader@github:anthonydresser/service-downloader#release":
+  version "1.0.0"
+  resolved "https://codeload.github.com/anthonydresser/service-downloader/tar.gz/531873923eb253d3dcc4efaf34227c1a78165a17"
+  dependencies:
+    decompress "^4.2.0"
+    http-proxy-agent "^2.0.0"
+    https-proxy-agent "^2.1.1"
+    tmp "^0.0.33"
+
 sigmund@~1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/sigmund/-/sigmund-1.0.1.tgz#3ff21f198cad2175f9f3b781853fd94d0d19b590"
@@ -2123,7 +2139,7 @@ time-stamp@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/time-stamp/-/time-stamp-1.1.0.tgz#764a5a11af50561921b133f3b44e618687e0f5c3"
 
-tmp@0.0.33:
+tmp@0.0.33, tmp@^0.0.33:
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
   dependencies:
