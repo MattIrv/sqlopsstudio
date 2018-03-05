@@ -94,10 +94,10 @@ export class AzureResourceProvider {
 			downloadFileNames: {},
 			downloadUrl: '',
 			executableFiles: ['SqlToolsResourceProviderService.exe', 'SqlToolsResourceProviderService'],
-			installDirectory: path.join(__dirname, '../../../', 'sqltoolsservice'),
+			installDirectory: path.join(__dirname, '../../../', 'sqltoolsservice') + '/{#platform#}/{#version#}',
 			proxy: '',
 			strictSSL: false,
-			version: ''
+			version: '1.4.0-alpha.10'
 		};
 		let serverdownloader = new ServerProvider(config, logger);
 		let clientOptions: ClientOptions = {
@@ -108,6 +108,7 @@ export class AzureResourceProvider {
 		serverdownloader.getOrDownloadServer().then(e => {
 			let serverOptions = this.generateServerOptions(e);
 			this._client = new SqlOpsDataClient(Constants.serviceName, serverOptions, clientOptions);
+			this._client.start();
 		});
 	}
 
