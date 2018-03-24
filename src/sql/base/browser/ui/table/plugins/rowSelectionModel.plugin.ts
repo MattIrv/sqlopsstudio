@@ -116,7 +116,7 @@ export class RowSelectionModel<T extends Slick.SlickData> implements Slick.Selec
 		}
 	}
 
-	private handleClick(e: KeyboardEvent): boolean {
+	private handleClick(e: MouseEvent): boolean {
 		let cell = this._grid.getCellFromEvent(e);
 		if (!cell || !this._grid.canCellBeActive(cell.row, cell.cell)) {
 			return false;

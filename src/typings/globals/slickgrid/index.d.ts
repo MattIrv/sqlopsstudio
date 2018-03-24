@@ -655,6 +655,11 @@ declare namespace Slick {
 		syncColumnCellResize?: boolean;
 
 		/**
+		 *
+		 */
+		minRowBuffer?: number;
+
+		/**
 		*
 		**/
 		topPanelHeight?: number;
