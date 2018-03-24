@@ -163,7 +163,7 @@ export class RowDetailView<T extends Slick.SlickData> {
 		let view = $('#innerDetailView_' + item.id);
 		if (view) {
 			let html = $('#innerDetailView_' + item.id).html();
-			if(html !== undefined) {
+			if (html !== undefined) {
 				item._detailContent = html;
 			}
 		}
@@ -390,7 +390,7 @@ export class RowDetailView<T extends Slick.SlickData> {
 		// If the padding is now more than the original minRowBuff we need to increase it
 		if (this._grid.getOptions().minRowBuffer < item._sizePadding) {
 			// Update the minRowBuffer so that the view doesn't disappear when it's at top of screen + the original default 3
-			this._grid.getOptions().minRowBuffer =item._sizePadding + 3;
+			this._grid.getOptions().minRowBuffer = item._sizePadding + 3;
 		}
 
 		mainContainer.setAttribute('style', `max-height: ${item._height}px`);
