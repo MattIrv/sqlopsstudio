@@ -502,7 +502,8 @@ export class EditorStatus implements IStatusbarItem {
 		if (!this.screenReaderNotification) {
 			this.screenReaderNotification = this.notificationService.prompt(
 				Severity.Info,
-				nls.localize('screenReaderDetectedExplanation.question', "Are you using a screen reader to operate VS Code?"),
+				// {{SQL CARBON EDIT}}
+				nls.localize('screenReaderDetectedExplanation.question', "Are you using a screen reader to operate Azure Data Studio?"),
 				[{
 					label: nls.localize('screenReaderDetectedExplanation.answerYes', "Yes"),
 					run: () => {
@@ -989,18 +990,12 @@ export class ChangeModeAction extends Action {
 			// {{SQL CARBON EDIT}}
 			// Change mode
 			models.forEach(textModel => {
-<<<<<<< HEAD
 				let self = this;
-				mode.then((modeValue) => {
-					QueryEditorService.sqlLanguageModeCheck(textModel, modeValue, activeEditor).then((newTextModel) => {
-						if (newTextModel) {
-							self.modelService.setMode(newTextModel, modeValue);
-						}
-					});
+				QueryEditorService.sqlLanguageModeCheck(textModel, languageSelection, activeEditor).then((newTextModel) => {
+					if (newTextModel) {
+						self.modelService.setMode(newTextModel, languageSelection);
+					}
 				});
-=======
-				this.modelService.setMode(textModel, languageSelection);
->>>>>>> vscode/release/1.30
 			});
 		});
 	}
@@ -1274,152 +1269,3 @@ export class ChangeEncodingAction extends Action {
 		});
 	}
 }
-<<<<<<< HEAD
-
-class ScreenReaderDetectedExplanation extends Themable {
-	private container: HTMLElement;
-	private hrElement: HTMLHRElement;
-	private _visible: boolean;
-
-	constructor(
-		@IThemeService themeService: IThemeService,
-		@IContextViewService private readonly contextViewService: IContextViewService,
-		@IWorkspaceConfigurationService private readonly configurationService: IWorkspaceConfigurationService,
-	) {
-		super(themeService);
-	}
-
-	get visible(): boolean {
-		return this._visible;
-	}
-
-	protected updateStyles(): void {
-		if (this.container) {
-			const background = this.getColor(editorWidgetBackground);
-			this.container.style.backgroundColor = background ? background.toString() : null;
-
-			const widgetShadowColor = this.getColor(widgetShadow);
-			this.container.style.boxShadow = widgetShadowColor ? `0 0px 8px ${widgetShadowColor}` : null;
-
-			const contrastBorderColor = this.getColor(contrastBorder);
-			this.container.style.border = contrastBorderColor ? `1px solid ${contrastBorderColor}` : null;
-
-			const foregroundColor = this.getColor(foreground);
-			this.hrElement.style.backgroundColor = foregroundColor ? foregroundColor.toString() : null;
-		}
-	}
-
-	show(anchorElement: HTMLElement): void {
-		this._visible = true;
-
-		this.contextViewService.showContextView({
-			getAnchor: () => {
-				const res = getDomNodePagePosition(anchorElement);
-
-				return {
-					x: res.left,
-					y: res.top - 9, /* above the status bar */
-					width: res.width,
-					height: res.height
-				} as IAnchor;
-			},
-			render: (container) => {
-				return this.renderContents(container);
-			},
-			onDOMEvent: (e, activeElement) => { },
-			onHide: () => {
-				this._visible = false;
-			}
-		});
-	}
-
-	hide(): void {
-		this.contextViewService.hideContextView();
-	}
-
-	protected renderContents(parent: HTMLElement): IDisposable {
-		const toDispose: IDisposable[] = [];
-
-		this.container = $('div.screen-reader-detected-explanation', {
-			'aria-hidden': 'true'
-		});
-
-		const title = $('h2.title', {}, nls.localize('screenReaderDetectedExplanation.title', "Screen Reader Optimized"));
-		this.container.appendChild(title);
-
-		const closeBtn = $('div.cancel');
-		toDispose.push(addDisposableListener(closeBtn, 'click', () => {
-			this.contextViewService.hideContextView();
-		}));
-		toDispose.push(addDisposableListener(closeBtn, 'mouseover', () => {
-			const theme = this.themeService.getTheme();
-			let darkenFactor: number;
-			switch (theme.type) {
-				case 'light':
-					darkenFactor = 0.1;
-					break;
-				case 'dark':
-					darkenFactor = 0.2;
-					break;
-			}
-
-			if (darkenFactor) {
-				closeBtn.style.backgroundColor = this.getColor(editorWidgetBackground, (color, theme) => darken(color, darkenFactor)(theme));
-			}
-		}));
-		toDispose.push(addDisposableListener(closeBtn, 'mouseout', () => {
-			closeBtn.style.backgroundColor = null;
-		}));
-		this.container.appendChild(closeBtn);
-
-		// {{SQL CARBON EDIT}}
-		const question = $('p.question', {}, nls.localize('screenReaderDetectedExplanation.question', "Are you using a screen reader to operate Azure Data Studio?"));
-		this.container.appendChild(question);
-
-		const buttonContainer = $('div.buttons');
-		this.container.appendChild(buttonContainer);
-
-		const yesBtn = new Button(buttonContainer);
-		yesBtn.label = nls.localize('screenReaderDetectedExplanation.answerYes', "Yes");
-		toDispose.push(attachButtonStyler(yesBtn, this.themeService));
-		toDispose.push(yesBtn.onDidClick(e => {
-			this.configurationService.updateValue('editor.accessibilitySupport', 'on', ConfigurationTarget.USER);
-			this.contextViewService.hideContextView();
-		}));
-
-		const noBtn = new Button(buttonContainer);
-		noBtn.label = nls.localize('screenReaderDetectedExplanation.answerNo', "No");
-		toDispose.push(attachButtonStyler(noBtn, this.themeService));
-		toDispose.push(noBtn.onDidClick(e => {
-			this.configurationService.updateValue('editor.accessibilitySupport', 'off', ConfigurationTarget.USER);
-			this.contextViewService.hideContextView();
-		}));
-
-		const clear = $('div');
-		clear.style.clear = 'both';
-		this.container.appendChild(clear);
-
-		const br = $('br');
-		this.container.appendChild(br);
-
-		this.hrElement = $('hr');
-		this.container.appendChild(this.hrElement);
-
-		// {{SQL CARBON EDIT}}
-		const explanation1 = $('p.body1', {}, nls.localize('screenReaderDetectedExplanation.body1', "Azure Data Studio is now optimized for usage with a screen reader."));
-		this.container.appendChild(explanation1);
-
-		const explanation2 = $('p.body2', {}, nls.localize('screenReaderDetectedExplanation.body2', "Some editor features will have different behaviour: e.g. word wrapping, folding, etc."));
-		this.container.appendChild(explanation2);
-
-		parent.appendChild(this.container);
-
-		this.updateStyles();
-
-		return {
-			dispose: () => dispose(toDispose)
-		};
-	}
-}
-=======
->>>>>>> vscode/release/1.30

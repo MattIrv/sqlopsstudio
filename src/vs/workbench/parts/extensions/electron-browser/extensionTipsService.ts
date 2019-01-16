@@ -534,47 +534,10 @@ export class ExtensionTipsService extends Disposable implements IExtensionTipsSe
 			.map(extensionId => (<IExtensionRecommendation>{ extensionId, sources: this._fileBasedRecommendations[extensionId].sources }));
 	}
 
-<<<<<<< HEAD
-	getOtherRecommendations(): TPromise<IExtensionRecommendation[]> {
-		// {{SQL CARBON EDIT}}
-		let recommendations = Object.keys(this._exeBasedRecommendations).concat(this._recommendations);
-		shuffle(recommendations, this.sessionSeed);
-		return TPromise.as(recommendations.map(extensionId => {
-			const sources: ExtensionRecommendationSource[] = [];
-			if (this._exeBasedRecommendations[extensionId]) {
-				sources.push('executable');
-			}
-			if (this._dynamicWorkspaceRecommendations.indexOf(extensionId) !== -1) {
-				sources.push('dynamic');
-			}
-			return (<IExtensionRecommendation>{ extensionId, sources });
-		}));
-	}
-
-	getKeymapRecommendations(): IExtensionRecommendation[] {
-		return (product.keymapExtensionTips || [])
-			.filter(extensionId => this.isExtensionAllowedToBeRecommended(extensionId))
-			.map(extensionId => (<IExtensionRecommendation>{ extensionId, sources: ['application'] }));
-	}
-
-	getAllRecommendations(): TPromise<IExtensionRecommendation[]> {
-		if (!this.proactiveRecommendationsFetched) {
-			return TPromise.as([]);
-		}
-		return TPromise.join([
-			this.getWorkspaceRecommendations(),
-			TPromise.as(this.getFileBasedRecommendations()),
-			this.getOtherRecommendations(),
-			TPromise.as(this.getKeymapRecommendations())
-		]).then(result => flatten(result).filter(e => this.isExtensionAllowedToBeRecommended(e.extensionId)));
-	}
-
-=======
 	/**
 	 * Parse all file based recommendations from product.extensionTips
 	 * Retire existing recommendations if they are older than a week or are not part of product.extensionTips anymore
 	 */
->>>>>>> vscode/release/1.30
 	private fetchFileBasedRecommendations() {
 		const extensionTips = product.extensionTips;
 		// {{SQL CARBON EDIT}}
@@ -878,24 +841,20 @@ export class ExtensionTipsService extends Disposable implements IExtensionTipsSe
 	//#region otherRecommendations
 
 	getOtherRecommendations(): Promise<IExtensionRecommendation[]> {
-		return this.fetchProactiveRecommendations().then(() => {
-			const others = distinct([
-				...Object.keys(this._exeBasedRecommendations),
-				...this._dynamicWorkspaceRecommendations,
-				...Object.keys(this._experimentalRecommendations),
-			]).filter(extensionId => this.isExtensionAllowedToBeRecommended(extensionId));
-			shuffle(others, this.sessionSeed);
-			return others.map(extensionId => {
-				const sources: ExtensionRecommendationSource[] = [];
-				if (this._exeBasedRecommendations[extensionId]) {
-					sources.push('executable');
-				}
-				if (this._dynamicWorkspaceRecommendations.indexOf(extensionId) !== -1) {
-					sources.push('dynamic');
-				}
-				return (<IExtensionRecommendation>{ extensionId, sources });
-			});
-		});
+		// {{SQL CARBON EDIT}} - Replace body of this method with our own
+		let recommendations = Object.keys(this._exeBasedRecommendations).concat(this._recommendations);
+		shuffle(recommendations, this.sessionSeed);
+		return TPromise.as(recommendations.map(extensionId => {
+			const sources: ExtensionRecommendationSource[] = [];
+			if (this._exeBasedRecommendations[extensionId]) {
+				sources.push('executable');
+			}
+			if (this._dynamicWorkspaceRecommendations.indexOf(extensionId) !== -1) {
+				sources.push('dynamic');
+			}
+			return (<IExtensionRecommendation>{ extensionId, sources });
+		}));
+		// {{SQL CARBON EDIT}} - End
 	}
 
 	private fetchProactiveRecommendations(calledDuringStartup?: boolean): Promise<void> {

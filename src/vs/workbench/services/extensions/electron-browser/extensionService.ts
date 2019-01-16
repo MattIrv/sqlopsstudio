@@ -31,84 +31,7 @@ import { CachedExtensionScanner, Logger } from 'vs/workbench/services/extensions
 import { ExtensionHostProcessManager } from 'vs/workbench/services/extensions/electron-browser/extensionHostProcessManager';
 
 const hasOwnProperty = Object.hasOwnProperty;
-<<<<<<< HEAD
-const NO_OP_VOID_PROMISE = TPromise.wrap<void>(void 0);
-
-export class ExtensionHostProcessManager extends Disposable {
-
-	public readonly onDidCrash: Event<[number, string]>;
-
-	/**
-	 * A map of already activated events to speed things up if the same activation event is triggered multiple times.
-	 */
-	private readonly _extensionHostProcessFinishedActivateEvents: { [activationEvent: string]: boolean; };
-	private _extensionHostProcessRPCProtocol: RPCProtocol;
-	private readonly _extensionHostProcessCustomers: IDisposable[];
-	private readonly _extensionHostProcessWorker: ExtensionHostProcessWorker;
-	/**
-	 * winjs believes a proxy is a promise because it has a `then` method, so wrap the result in an object.
-	 */
-	private _extensionHostProcessProxy: TPromise<{ value: ExtHostExtensionServiceShape; }>;
-
-	constructor(
-		extensionHostProcessWorker: ExtensionHostProcessWorker,
-		initialActivationEvents: string[],
-		@IInstantiationService private readonly _instantiationService: IInstantiationService,
-		@IEnvironmentService private readonly _environmentService: IEnvironmentService,
-	) {
-		super();
-		this._extensionHostProcessFinishedActivateEvents = Object.create(null);
-		this._extensionHostProcessRPCProtocol = null;
-		this._extensionHostProcessCustomers = [];
-
-		this._extensionHostProcessWorker = extensionHostProcessWorker;
-		this.onDidCrash = this._extensionHostProcessWorker.onCrashed;
-		this._extensionHostProcessProxy = this._extensionHostProcessWorker.start().then(
-			(protocol) => {
-				return { value: this._createExtensionHostCustomers(protocol) };
-			},
-			(err) => {
-				console.error('Error received from starting extension host');
-				console.error(err);
-				return null;
-			}
-		);
-		this._extensionHostProcessProxy.then(() => {
-			initialActivationEvents.forEach((activationEvent) => this.activateByEvent(activationEvent));
-		});
-	}
-
-	// {{SQL CARBON EDIT}}
-	public getExtenstionHostProcessWorker(): ExtensionHostProcessWorker {
-		return this._extensionHostProcessWorker;
-	}
-
-	public dispose(): void {
-		if (this._extensionHostProcessWorker) {
-			this._extensionHostProcessWorker.dispose();
-		}
-		if (this._extensionHostProcessRPCProtocol) {
-			this._extensionHostProcessRPCProtocol.dispose();
-		}
-		for (let i = 0, len = this._extensionHostProcessCustomers.length; i < len; i++) {
-			const customer = this._extensionHostProcessCustomers[i];
-			try {
-				customer.dispose();
-			} catch (err) {
-				errors.onUnexpectedError(err);
-			}
-		}
-		this._extensionHostProcessProxy = null;
-
-		super.dispose();
-	}
-
-	public canProfileExtensionHost(): boolean {
-		return this._extensionHostProcessWorker && Boolean(this._extensionHostProcessWorker.getInspectPort());
-	}
-=======
 const NO_OP_VOID_PROMISE = Promise.resolve<void>(void 0);
->>>>>>> vscode/release/1.30
 
 schema.properties.engines.properties.vscode.default = `^${pkg.version}`;
 
@@ -176,7 +99,6 @@ export class ExtensionService extends Disposable implements IExtensionService {
 		}
 	}
 
-<<<<<<< HEAD
 	// {{SQL CARBON EDIT}}
 	public getExtenstionHostProcessId(): number {
 		if (this._extensionHostProcessManagers.length !== 1)
@@ -185,20 +107,8 @@ export class ExtensionService extends Disposable implements IExtensionService {
 		}
 		return this._extensionHostProcessManagers[0].getExtenstionHostProcessWorker().getExtenstionHostProcess().pid;
 	}
-	private startDelayed(lifecycleService: ILifecycleService): void {
-		let started = false;
-		const startOnce = () => {
-			if (!started) {
-				started = true;
 
-				this._startExtensionHostProcess([]);
-				this._scanAndHandleExtensions();
-			}
-		};
-
-=======
 	private _startDelayed(lifecycleService: ILifecycleService): void {
->>>>>>> vscode/release/1.30
 		// delay extension host creation and extension scanning
 		// until the workbench is running. we cannot defer the
 		// extension host more (LifecyclePhase.Restored) because

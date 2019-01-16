@@ -274,7 +274,6 @@ export class WorkbenchShell extends Disposable {
 		perf.mark('didStartWorkbench');
 	}
 
-<<<<<<< HEAD
 	// {{SQL CARBON EDIT}}
 	private sendUsageEvents(): void {
 		const dailyLastUseDate = Date.parse(this.storageService.get('telemetry.dailyLastUseDate'));
@@ -304,29 +303,6 @@ export class WorkbenchShell extends Disposable {
 		}
 	}
 
-	private logLocalStorageMetrics(): void {
-		if (this.lifecycleService.startupKind === StartupKind.ReloadedWindow || this.lifecycleService.startupKind === StartupKind.ReopenedWindow) {
-			return; // avoid logging localStorage metrics for reload/reopen, we prefer cold startup numbers
-		}
-
-		perf.mark('willReadLocalStorage');
-		const readyToSend = this.storageService.getBoolean('localStorageMetricsReadyToSend2');
-		perf.mark('didReadLocalStorage');
-
-		if (!readyToSend) {
-			this.storageService.store('localStorageMetricsReadyToSend2', true);
-			return; // avoid logging localStorage metrics directly after the update, we prefer cold startup numbers
-		}
-
-		if (!this.storageService.getBoolean('localStorageMetricsSent2')) {
-			perf.mark('willWriteLocalStorage');
-			this.storageService.store('localStorageMetricsSent2', true);
-			perf.mark('didWriteLocalStorage');
-
-			perf.mark('willStatLocalStorage');
-			stat(join(this.environmentService.userDataPath, 'Local Storage', 'file__0.localstorage'), (error, stat) => {
-				perf.mark('didStatLocalStorage');
-=======
 	private logStorageTelemetry(): void {
 		const initialStartup = !!this.configuration.isInitialStartup;
 
@@ -349,7 +325,6 @@ export class WorkbenchShell extends Disposable {
 
 			if (!loggedStorageErrors.has(errorStr)) {
 				loggedStorageErrors.add(errorStr);
->>>>>>> vscode/release/1.30
 
 				/* __GDPR__
 					"sqliteStorageError<NUMBER>" : {
@@ -469,13 +444,8 @@ export class WorkbenchShell extends Disposable {
 			let telemetryOutput = this.environmentService.args['telemetry-output'];
 			this.telemetryService = new FileTelemetryService(telemetryOutput);
 		// Telemetry
-<<<<<<< HEAD
-		} else if (this.environmentService.isBuilt && !this.environmentService.isExtensionDevelopment && !this.environmentService.args['disable-telemetry'] && !!product.enableTelemetry) {
-			const channel = getDelayedChannel<ITelemetryAppenderChannel>(sharedProcess.then(c => c.getChannel('telemetryAppender')));
-=======
-		if (!this.environmentService.isExtensionDevelopment && !this.environmentService.args['disable-telemetry'] && !!product.enableTelemetry) {
+		} else if (!this.environmentService.isExtensionDevelopment && !this.environmentService.args['disable-telemetry'] && !!product.enableTelemetry) {
 			const channel = getDelayedChannel(sharedProcess.then(c => c.getChannel('telemetryAppender')));
->>>>>>> vscode/release/1.30
 			const config: ITelemetryServiceConfig = {
 				appender: combinedAppender(new TelemetryAppenderClient(channel), new LogAppender(this.logService)),
 				commonProperties: resolveWorkbenchCommonProperties(this.storageService, product.commit, pkg.version, this.configuration.machineId, this.environmentService.installSourcePath),

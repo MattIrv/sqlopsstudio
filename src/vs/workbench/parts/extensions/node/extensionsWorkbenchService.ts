@@ -717,39 +717,32 @@ export class ExtensionsWorkbenchService implements IExtensionsWorkbenchService, 
 			return Promise.reject(new Error('Missing gallery'));
 		}
 
-<<<<<<< HEAD
-		return this.progressService.withProgress({
-			location: ProgressLocation.Extensions,
-			title: nls.localize('installingMarketPlaceExtension', 'Installing extension from Marketplace....'),
-			source: `${extension.id}`
+		return this.installWithProgress(
 			// {{SQL CARBON EDIT}}
-		}, () => {
-			if (extensionPolicy === ExtensionsPolicy.allowMicrosoft) {
-				if (ext.publisherDisplayName === 'Microsoft') {
-					return this.downloadOrBrowse(ext);
-				} else {
-					return TPromise.as(null);
+			() => {
+				if (extensionPolicy === ExtensionsPolicy.allowMicrosoft) {
+					if (ext.publisherDisplayName === 'Microsoft') {
+						return this.downloadOrBrowse(ext).then(() => this.checkAndEnableDisabledDependencies(gallery.identifier));
+					} else {
+						return TPromise.as(null);
+					}
 				}
+				return this.downloadOrBrowse(ext).then(() => this.checkAndEnableDisabledDependencies(gallery.identifier));
 			}
-			return this.downloadOrBrowse(ext);
-		});
+			// {{SQL CARBON EDIT}} - End
+			, gallery.displayName);
 	}
 
 	// {{SQL CARBON EDIT}}
-	private downloadOrBrowse(ext: Extension): TPromise<any> {
+	private downloadOrBrowse(ext: Extension): Promise<any> {
 		if (ext.gallery.assets.downloadPage && ext.gallery.assets.downloadPage.uri) {
 			window.open(ext.gallery.assets.downloadPage.uri);
-			return TPromise.wrap<void>(void 0);
+			return Promise.resolve(undefined);
 		} else {
 			return this.extensionService.installFromGallery(ext.gallery);
 		}
-=======
-		return this.installWithProgress(
-			() => this.extensionService.installFromGallery(gallery)
-				.then(() => this.checkAndEnableDisabledDependencies(gallery.identifier))
-			, gallery.displayName);
->>>>>>> vscode/release/1.30
 	}
+	// {{SQL CARBON EDIT}} - End
 
 	setEnablement(extensions: IExtension | IExtension[], enablementState: EnablementState): Promise<void> {
 		extensions = Array.isArray(extensions) ? extensions : [extensions];

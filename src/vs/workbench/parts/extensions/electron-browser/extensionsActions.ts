@@ -2576,9 +2576,8 @@ export class InstallVSIXAction extends Action {
 		super(id, label, 'extension-action install-vsix', true);
 	}
 
-<<<<<<< HEAD
-	run(): TPromise<any> {
-		// {{SQL CARBON EDIT}}
+	run(): Promise<any> {
+		// {{SQL CARBON EDIT}} - Replace run body
 		let extensionPolicy = this.configurationService.getValue<string>(ExtensionsPolicyKey);
 		if (extensionPolicy === ExtensionsPolicy.allowAll) {
 			return this.windowService.showOpenDialog({
@@ -2588,10 +2587,9 @@ export class InstallVSIXAction extends Action {
 				buttonLabel: mnemonicButtonLabel(localize({ key: 'installButton', comment: ['&& denotes a mnemonic'] }, "&&Install"))
 			}).then(result => {
 				if (!result) {
-					return TPromise.as(null);
+					return Promise.resolve(null);
 				}
-				return TPromise.join(result.map(vsix => {
-					// {{SQL CARBON EDIT}}
+				return Promise.all(result.map(vsix => {
 					if (!this.storageService.getBoolean(vsix)) {
 						this.notificationService.prompt(
 							Severity.Warning,
@@ -2607,7 +2605,8 @@ export class InstallVSIXAction extends Action {
 												[{
 													label: localize('InstallVSIXAction.reloadNow', "Reload Now"),
 													run: () => this.windowService.reloadWindow()
-												}]
+												}],
+												{ sticky: true }
 											);
 										});
 									}
@@ -2624,7 +2623,8 @@ export class InstallVSIXAction extends Action {
 										return TPromise.as(null);
 									}
 								}
-							]
+							],
+							{ sticky: true }
 						);
 					} else {
 						this.extensionsWorkbenchService.install(vsix).then(() => {
@@ -2634,42 +2634,18 @@ export class InstallVSIXAction extends Action {
 								[{
 									label: localize('InstallVSIXAction.reloadNow', "Reload Now"),
 									run: () => this.windowService.reloadWindow()
-								}]
+								}],
+								{ sticky: true }
 							);
 						});
 					}
-
 				}));
-=======
-	run(): Promise<any> {
-		return Promise.resolve(this.windowService.showOpenDialog({
-			title: localize('installFromVSIX', "Install from VSIX"),
-			filters: [{ name: 'VSIX Extensions', extensions: ['vsix'] }],
-			properties: ['openFile'],
-			buttonLabel: mnemonicButtonLabel(localize({ key: 'installButton', comment: ['&& denotes a mnemonic'] }, "&&Install"))
-		})).then(result => {
-			if (!result) {
-				return Promise.resolve(null);
-			}
-
-			return Promise.all(result.map(vsix => this.extensionsWorkbenchService.install(vsix))).then(() => {
-				this.notificationService.prompt(
-					Severity.Info,
-					localize('InstallVSIXAction.success', "Successfully installed the extension. Reload to enable it."),
-					[{
-						label: localize('InstallVSIXAction.reloadNow', "Reload Now"),
-						run: () => this.windowService.reloadWindow()
-					}],
-					{ sticky: true }
-				);
->>>>>>> vscode/release/1.30
 			});
-			// {{SQL CARBON EDIT}}
 		} else {
 			this.notificationService.error(localize('InstallVSIXAction.allowNone', 'Your extension policy does not allow downloading extensions. Please change your extension policy and try again.'));
 			return TPromise.as(null);
 		}
-
+		// {{SQL CARBON EDIT}} - End
 	}
 }
 

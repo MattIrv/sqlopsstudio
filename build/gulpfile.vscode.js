@@ -29,13 +29,11 @@ const packageJson = require('../package.json');
 const product = require('../product.json');
 const crypto = require('crypto');
 const i18n = require('./lib/i18n');
-<<<<<<< HEAD
 // {{SQL CARBON EDIT}}
 const serviceDownloader = require('service-downloader').ServiceDownloadProvider;
 const platformInfo = require('service-downloader/out/platform').PlatformInformation;
 const glob = require('glob');
-=======
->>>>>>> vscode/release/1.30
+// {{SQL CARBON EDIT}} - End
 const deps = require('./dependencies');
 const getElectronVersion = require('./lib/electron').getElectronVersion;
 const createAsar = require('./lib/asar').createAsar;
@@ -62,29 +60,6 @@ const nodeModules = [
 
 
 // Build
-<<<<<<< HEAD
-const builtInExtensions = require('./builtInExtensions.json');
-
-const excludedExtensions = [
-	'vscode-api-tests',
-	'vscode-colorize-tests',
-	'ms-vscode.node-debug',
-	'ms-vscode.node-debug2',
-];
-
-// {{SQL CARBON EDIT}}
-const vsce = require('vsce');
-const sqlBuiltInExtensions = [
-	// Add SQL built-in extensions here.
-	// the extension will be excluded from SQLOps package and will have separate vsix packages
-	'agent',
-	'import',
-	'profiler'
-];
-var azureExtensions =  [ 'azurecore'];
-
-=======
->>>>>>> vscode/release/1.30
 const vscodeEntryPoints = _.flatten([
 	buildfile.entrypoint('vs/workbench/workbench.main'),
 	buildfile.base,
@@ -197,47 +172,10 @@ const config = {
 	darwinApplicationCategoryType: 'public.app-category.developer-tools',
 	darwinHelpBookFolder: 'VS Code HelpBook',
 	darwinHelpBookName: 'VS Code HelpBook',
-<<<<<<< HEAD
-	darwinBundleDocumentTypes: [{
-		name: product.nameLong + ' document',
-		role: 'Editor',
-		ostypes: ["TEXT", "utxt", "TUTX", "****"],
-		// {{SQL CARBON EDIT}}
-		extensions: ["csv", "json", "sqlplan", "sql", "xml"],
-		iconFile: 'resources/darwin/code_file.icns'
-	}],
-=======
 	darwinBundleDocumentTypes: [
-		darwinBundleDocumentType(["bat", "cmd"], 'resources/darwin/bat.icns'),
-		darwinBundleDocumentType(["bowerrc"], 'resources/darwin/bower.icns'),
-		darwinBundleDocumentType(["c", "h"], 'resources/darwin/c.icns'),
-		darwinBundleDocumentType(["config", "editorconfig", "gitattributes", "gitconfig", "gitignore", "ini"], 'resources/darwin/config.icns'),
-		darwinBundleDocumentType(["cc", "cpp", "cxx", "hh", "hpp", "hxx"], 'resources/darwin/cpp.icns'),
-		darwinBundleDocumentType(["cs", "csx"], 'resources/darwin/csharp.icns'),
-		darwinBundleDocumentType(["css"], 'resources/darwin/css.icns'),
-		darwinBundleDocumentType(["go"], 'resources/darwin/go.icns'),
-		darwinBundleDocumentType(["asp", "aspx", "cshtml", "htm", "html", "jshtm", "jsp", "phtml", "shtml"], 'resources/darwin/html.icns'),
-		darwinBundleDocumentType(["jade"], 'resources/darwin/jade.icns'),
-		darwinBundleDocumentType(["jav", "java"], 'resources/darwin/java.icns'),
-		darwinBundleDocumentType(["js", "jscsrc", "jshintrc", "mjs"], 'resources/darwin/javascript.icns'),
-		darwinBundleDocumentType(["json"], 'resources/darwin/json.icns'),
-		darwinBundleDocumentType(["less"], 'resources/darwin/less.icns'),
-		darwinBundleDocumentType(["markdown", "md", "mdoc", "mdown", "mdtext", "mdtxt", "mdwn", "mkd", "mkdn"], 'resources/darwin/markdown.icns'),
-		darwinBundleDocumentType(["php"], 'resources/darwin/php.icns'),
-		darwinBundleDocumentType(["ps1", "psd1", "psm1"], 'resources/darwin/powershell.icns'),
-		darwinBundleDocumentType(["py"], 'resources/darwin/python.icns'),
-		darwinBundleDocumentType(["gemspec", "rb"], 'resources/darwin/ruby.icns'),
-		darwinBundleDocumentType(["scss"], 'resources/darwin/sass.icns'),
-		darwinBundleDocumentType(["bash", "bash_login", "bash_logout", "bash_profile", "bashrc", "profile", "rhistory", "rprofile", "sh", "zlogin", "zlogout", "zprofile", "zsh", "zshenv", "zshrc"], 'resources/darwin/shell.icns'),
-		darwinBundleDocumentType(["sql"], 'resources/darwin/sql.icns'),
-		darwinBundleDocumentType(["ts"], 'resources/darwin/typescript.icns'),
-		darwinBundleDocumentType(["tsx", "jsx"], 'resources/darwin/react.icns'),
-		darwinBundleDocumentType(["vue"], 'resources/darwin/vue.icns'),
-		darwinBundleDocumentType(["ascx", "csproj", "dtd", "wxi", "wxl", "wxs", "xml", "xaml"], 'resources/darwin/xml.icns'),
-		darwinBundleDocumentType(["eyaml", "eyml", "yaml", "yml"], 'resources/darwin/yaml.icns'),
-		darwinBundleDocumentType(["clj", "cljs", "cljx", "clojure", "code-workspace", "coffee", "ctp", "dockerfile", "dot", "edn", "fs", "fsi", "fsscript", "fsx", "handlebars", "hbs", "lua", "m", "makefile", "ml", "mli", "pl", "pl6", "pm", "pm6", "pod", "pp", "properties", "psgi", "pug", "r", "rs", "rt", "svg", "svgz", "t", "txt", "vb", "xcodeproj", "xcworkspace"], 'resources/darwin/default.icns')
+		// {{SQL CARBON EDIT}} - Remove most document types and replace with ours
+		darwinBundleDocumentType(["csv", "json", "sqlplan", "sql", "xml"], 'resources/darwin/code_file.icns'),
 	],
->>>>>>> vscode/release/1.30
 	darwinBundleURLTypes: [{
 		role: 'Viewer',
 		name: product.nameLong,
@@ -390,7 +328,7 @@ function packageTask(platform, arch, opts) {
 			.pipe(filter(['**', '!**/*.js.map']));
 
 		const root = path.resolve(path.join(__dirname, '..'));
-<<<<<<< HEAD
+		// {{SQL CARBON EDIT}} - Replace extension sources call
 		const localExtensionDescriptions = glob.sync('extensions/*/package.json')
 			.map(manifestPath => {
 				const extensionPath = path.dirname(path.join(root, manifestPath));
@@ -423,14 +361,8 @@ function packageTask(platform, arch, opts) {
 		const sources = es.merge(src, localExtensions, localExtensionDependencies)
 			.pipe(util.setExecutableBit(['**/*.sh']))
 			.pipe(filter(['**', '!**/*.js.map']));
+		// {{SQL CARBON EDIT}} - End
 
-=======
-
-		const sources = es.merge(src, ext.packageExtensionsStream({
-			sourceMappingURLBase: sourceMappingURLBase
-		}));
-
->>>>>>> vscode/release/1.30
 		let version = packageJson.version;
 		// @ts-ignore JSON checking: quality is optional
 		const quality = product.quality;
@@ -439,11 +371,8 @@ function packageTask(platform, arch, opts) {
 			version += '-' + quality;
 		}
 
-<<<<<<< HEAD
-		// {{SQL CARBON EDIT}}
+		c// {{SQL CARBON EDIT}}
 		const name = (platform === 'darwin') ? 'Azure Data Studio' : product.nameShort;
-=======
-		const name = product.nameShort;
 		const packageJsonUpdates = { name, version };
 
 		// for linux url handling
@@ -451,7 +380,6 @@ function packageTask(platform, arch, opts) {
 			packageJsonUpdates.desktopName = `${product.applicationName}-url-handler.desktop`;
 		}
 
->>>>>>> vscode/release/1.30
 		const packageJsonStream = gulp.src(['package.json'], { base: '.' })
 			.pipe(json(packageJsonUpdates));
 
@@ -496,7 +424,6 @@ function packageTask(platform, arch, opts) {
 			.pipe(util.cleanNodeModule('gc-signals', ['binding.gyp', 'build/**', 'src/**', 'deps/**'], ['build/Release/*.node', 'src/index.js']))
 			.pipe(util.cleanNodeModule('keytar', ['binding.gyp', 'build/**', 'src/**', 'script/**', 'node_modules/**'], ['**/*.node']))
 			.pipe(util.cleanNodeModule('node-pty', ['binding.gyp', 'build/**', 'src/**', 'tools/**'], ['build/Release/*.exe', 'build/Release/*.dll', 'build/Release/*.node']))
-<<<<<<< HEAD
 			// {{SQL CARBON EDIT}}
 			.pipe(util.cleanNodeModule('chart.js', ['node_modules/**'], undefined))
 			.pipe(util.cleanNodeModule('emmet', ['node_modules/**'], undefined))
@@ -506,9 +433,7 @@ function packageTask(platform, arch, opts) {
 			.pipe(util.cleanNodeModule('slickgrid', ['node_modules/**', 'examples/**'], undefined))
 			.pipe(util.cleanNodeModule('nsfw', ['binding.gyp', 'build/**', 'src/**', 'openpa/**', 'includes/**'], ['**/*.node', '**/*.a']))
 			.pipe(util.cleanNodeModule('vscode-nsfw', ['binding.gyp', 'build/**', 'src/**', 'openpa/**', 'includes/**'], ['**/*.node', '**/*.a']))
-=======
-			.pipe(util.cleanNodeModule('vscode-nsfw', ['binding.gyp', 'build/**', 'src/**', 'openpa/**', 'includes/**'], ['build/Release/*.node', '**/*.a']))
->>>>>>> vscode/release/1.30
+			// {{SQL CARBON EDIT}} - End
 			.pipe(util.cleanNodeModule('vsda', ['binding.gyp', 'README.md', 'build/**', '*.bat', '*.sh', '*.cpp', '*.h'], ['build/Release/vsda.node']))
 			.pipe(createAsar(path.join(process.cwd(), 'node_modules'), ['**/*.node', '**/vscode-ripgrep/bin/*', '**/node-pty/build/Release/*'], 'app/node_modules.asar'));
 
@@ -618,7 +543,6 @@ function packageTask(platform, arch, opts) {
 
 const buildRoot = path.dirname(root);
 
-<<<<<<< HEAD
 // {{SQL CARBON EDIT}}
 gulp.task('vscode-win32-x64-azurecore', ['optimize-vscode'], packageAzureCoreTask('win32', 'x64'));
 gulp.task('vscode-darwin-azurecore', ['optimize-vscode'], packageAzureCoreTask('darwin'));
@@ -630,23 +554,11 @@ gulp.task('clean-vscode-darwin', util.rimraf(path.join(buildRoot, 'azuredatastud
 gulp.task('clean-vscode-linux-ia32', util.rimraf(path.join(buildRoot, 'azuredatastudio-linux-ia32')));
 gulp.task('clean-vscode-linux-x64', util.rimraf(path.join(buildRoot, 'azuredatastudio-linux-x64')));
 gulp.task('clean-vscode-linux-arm', util.rimraf(path.join(buildRoot, 'azuredatastudio-linux-arm')));
+gulp.task('clean-vscode-linux-arm64', util.rimraf(path.join(buildRoot, 'azuredatastudio-linux-arm64')));
 
 gulp.task('vscode-win32-ia32', ['optimize-vscode', 'clean-vscode-win32-ia32'], packageTask('win32', 'ia32'));
 gulp.task('vscode-win32-x64',  ['vscode-win32-x64-azurecore', 'optimize-vscode', 'clean-vscode-win32-x64'], packageTask('win32', 'x64'));
-gulp.task('vscode-darwin', ['vscode-darwin-azurecore', 'optimize-vscode', 'clean-vscode-darwin'], packageTask('darwin'));
-=======
-gulp.task('clean-vscode-win32-ia32', util.rimraf(path.join(buildRoot, 'VSCode-win32-ia32')));
-gulp.task('clean-vscode-win32-x64', util.rimraf(path.join(buildRoot, 'VSCode-win32-x64')));
-gulp.task('clean-vscode-darwin', util.rimraf(path.join(buildRoot, 'VSCode-darwin')));
-gulp.task('clean-vscode-linux-ia32', util.rimraf(path.join(buildRoot, 'VSCode-linux-ia32')));
-gulp.task('clean-vscode-linux-x64', util.rimraf(path.join(buildRoot, 'VSCode-linux-x64')));
-gulp.task('clean-vscode-linux-arm', util.rimraf(path.join(buildRoot, 'VSCode-linux-arm')));
-gulp.task('clean-vscode-linux-arm64', util.rimraf(path.join(buildRoot, 'VSCode-linux-arm64')));
-
-gulp.task('vscode-win32-ia32', ['optimize-vscode', 'clean-vscode-win32-ia32'], packageTask('win32', 'ia32'));
-gulp.task('vscode-win32-x64', ['optimize-vscode', 'clean-vscode-win32-x64'], packageTask('win32', 'x64'));
-gulp.task('vscode-darwin', ['optimize-vscode', 'clean-vscode-darwin'], packageTask('darwin', null, { stats: true }));
->>>>>>> vscode/release/1.30
+gulp.task('vscode-darwin', ['vscode-darwin-azurecore', 'optimize-vscode', 'clean-vscode-darwin'], packageTask('darwin', null, { stats: true }));
 gulp.task('vscode-linux-ia32', ['optimize-vscode', 'clean-vscode-linux-ia32'], packageTask('linux', 'ia32'));
 gulp.task('vscode-linux-x64', ['vscode-linux-x64-azurecore', 'optimize-vscode', 'clean-vscode-linux-x64'], packageTask('linux', 'x64'));
 gulp.task('vscode-linux-arm', ['optimize-vscode', 'clean-vscode-linux-arm'], packageTask('linux', 'arm'));
@@ -703,14 +615,7 @@ gulp.task('vscode-translations-export', ['optimize-vscode'], function () {
 		gulp.src(pathToMetadata).pipe(i18n.createXlfFilesForCoreBundle()),
 		gulp.src(pathToSetup).pipe(i18n.createXlfFilesForIsl()),
 		gulp.src(pathToExtensions).pipe(i18n.createXlfFilesForExtensions())
-<<<<<<< HEAD
-	// {{SQL CARBON EDIT}}
-	// disable since function makes calls to VS Code Transifex API
-	// ).pipe(i18n.findObsoleteResources(apiHostname, apiName, apiToken)
-	).pipe(vfs.dest('../vscode-transifex-input'));
-=======
 	).pipe(vfs.dest('../vscode-translations-export'));
->>>>>>> vscode/release/1.30
 });
 
 gulp.task('vscode-translations-pull', function () {
@@ -721,31 +626,13 @@ gulp.task('vscode-translations-pull', function () {
 });
 
 gulp.task('vscode-translations-import', function () {
-<<<<<<< HEAD
+	// {{SQL CARBON EDIT}} - Replace function body with our own
 	[...i18n.defaultLanguages, ...i18n.extraLanguages].forEach(language => {
 		gulp.src(`../vscode-localization/${language.id}/build/*/*.xlf`)
 			.pipe(i18n.prepareI18nFiles())
 			.pipe(vfs.dest(`./i18n/${language.folderName}`));
-
-		// {{SQL CARBON EDIT}}
-		// gulp.src(`../vscode-localization/${language.id}/setup/*/*.xlf`)
-		// 	.pipe(i18n.prepareIslFiles(language, innoSetupConfig[language.id]))
-		// 	.pipe(vfs.dest(`./build/win32/i18n`));
 	});
-=======
-	var options = minimist(process.argv.slice(2), {
-		string: 'location',
-		default: {
-			location: '../vscode-translations-import'
-		}
-	});
-	return es.merge([...i18n.defaultLanguages, ...i18n.extraLanguages].map(language => {
-		let id = language.transifexId || language.id;
-		return gulp.src(`${options.location}/${id}/setup/*/*.xlf`)
-			.pipe(i18n.prepareIslFiles(language, innoSetupConfig[language.id]))
-			.pipe(vfs.dest(`./build/win32/i18n`));
-	}));
->>>>>>> vscode/release/1.30
+	// {{SQL CARBON EDIT}} - End
 });
 
 // Sourcemaps

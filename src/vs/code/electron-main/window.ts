@@ -158,27 +158,12 @@ export class CodeWindow extends Disposable implements ICodeWindow {
 
 		if (isMacintosh && windowConfig && windowConfig.nativeTabs === true) {
 			options.tabbingIdentifier = product.nameShort; // this opts in to sierra tabs
-		// mairvine TODO: investigate this
-			// 	useNativeTabs = true;
-		// }
-
-		// let useCustomTitleStyle = false;
-		// // {{SQL CARBON EDIT}}
-		// // if (isMacintosh) {
-		// // turn-off custom menus to avoid bug calculating size of SQL editor
-		// //
-		// // if (isMacintosh && (!windowConfig || !windowConfig.titleBarStyle || windowConfig.titleBarStyle === 'custom')) {
-		// // 	const isDev = !this.environmentService.isBuilt || !!config.extensionDevelopmentPath;
-		// // 	if (!isDev) {
-		// // 		useCustomTitleStyle = true; // not enabled when developing due to https://github.com/electron/electron/issues/3647
-		// // 	}
-		// // }
-
-		// if (useNativeTabs) {
-		// 	useCustomTitleStyle = false; // native tabs on sierra do not work with custom title style
 		}
 
-		const useCustomTitleStyle = getTitleBarStyle(this.configurationService, this.environmentService, !!config.extensionDevelopmentPath) === 'custom';
+		// {{SQL CARBON EDIT}} -- TODO mairvine - see if this is still necessary now that it has been refactored
+		// turn-off custom menus to avoid bug calculating size of SQL editor
+		// const useCustomTitleStyle = getTitleBarStyle(this.configurationService, this.environmentService, !!config.extensionDevelopmentPath) === 'custom';
+		const useCustomTitleStyle = false;
 		if (useCustomTitleStyle) {
 			options.titleBarStyle = 'hidden';
 			this.hiddenTitleBarStyle = true;

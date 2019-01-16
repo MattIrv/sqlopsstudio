@@ -314,7 +314,7 @@ function toExtension(galleryExtension: IRawGalleryExtension, version: IRawGaller
 		readme: getVersionAsset(version, AssetType.Details),
 		changelog: getVersionAsset(version, AssetType.Changelog),
 		download: getVersionAsset(version, AssetType.VSIX),
-		// {{SQL CARBON EDIT}}
+		// {{SQL CARBON EDIT}} - Add downloadPage
 		downloadPage: getVersionAsset(version, AssetType.DownloadPage),
 		icon: getVersionAsset(version, AssetType.Icon),
 		license: getVersionAsset(version, AssetType.License),
@@ -501,7 +501,6 @@ export class ExtensionGalleryService implements IExtensionGalleryService {
 		});
 	}
 
-<<<<<<< HEAD
 	// {{SQL CARBON EDIT}}
 	/**
 	 * The result of querying the gallery returns all the extensions because it's only reading a static file.
@@ -582,10 +581,7 @@ export class ExtensionGalleryService implements IExtensionGalleryService {
 		return a[fieldName] < b[fieldName] ? -1 : 1;
 	}
 
-	private queryGallery(query: Query): TPromise<{ galleryExtensions: IRawGalleryExtension[], total: number; }> {
-=======
 	private queryGallery(query: Query, token: CancellationToken): Promise<{ galleryExtensions: IRawGalleryExtension[], total: number; }> {
->>>>>>> vscode/release/1.30
 		return this.commonHeadersPromise.then(commonHeaders => {
 			const data = JSON.stringify(query.raw);
 			const headers = assign({}, commonHeaders, {
@@ -640,40 +636,6 @@ export class ExtensionGalleryService implements IExtensionGalleryService {
 		});
 	}
 
-<<<<<<< HEAD
-	download(extension: IGalleryExtension, operation: InstallOperation): TPromise<string> {
-		return this.loadCompatibleVersion(extension)
-			.then(extension => {
-				if (!extension) {
-					return TPromise.wrapError(new Error(localize('notCompatibleDownload', "Unable to download because the extension compatible with current version '{0}' of VS Code is not found.", pkg.version)));
-				}
-				const zipPath = path.join(tmpdir(), generateUuid());
-				const data = getGalleryExtensionTelemetryData(extension);
-				const startTime = new Date().getTime();
-				/* __GDPR__
-					"galleryService:downloadVSIX" : {
-						"duration": { "classification": "SystemMetaData", "purpose": "PerformanceAndHealth", "isMeasurement": true },
-						"${include}": [
-							"${GalleryExtensionTelemetryData}"
-						]
-					}
-				*/
-				const log = (duration: number) => this.telemetryService.publicLog('galleryService:downloadVSIX', assign(data, { duration }));
-
-				// {{SQL Carbon Edit}} - Don't append install or update on to the URL
-				// const operationParam = operation === InstallOperation.Install ? 'install' : operation === InstallOperation.Update ? 'update' : '';
-				const operationParam = undefined;
-				const downloadAsset = operationParam ? {
-					uri: `${extension.assets.download.uri}&${operationParam}=true`,
-					fallbackUri: `${extension.assets.download.fallbackUri}?${operationParam}=true`
-				} : extension.assets.download;
-
-				return this.getAsset(downloadAsset)
-					.then(context => download(zipPath, context))
-					.then(() => log(new Date().getTime() - startTime))
-					.then(() => zipPath);
-			});
-=======
 	download(extension: IGalleryExtension, operation: InstallOperation): Promise<string> {
 		this.logService.trace('ExtensionGalleryService#download', extension.identifier.id);
 		const zipPath = path.join(tmpdir(), generateUuid());
@@ -689,7 +651,9 @@ export class ExtensionGalleryService implements IExtensionGalleryService {
 		*/
 		const log = (duration: number) => this.telemetryService.publicLog('galleryService:downloadVSIX', assign(data, { duration }));
 
-		const operationParam = operation === InstallOperation.Install ? 'install' : operation === InstallOperation.Update ? 'update' : '';
+		// {{SQL Carbon Edit}} - Don't append install or update on to the URL
+		// const operationParam = operation === InstallOperation.Install ? 'install' : operation === InstallOperation.Update ? 'update' : '';
+		const operationParam = undefined;
 		const downloadAsset = operationParam ? {
 			uri: `${extension.assets.download.uri}&${operationParam}=true`,
 			fallbackUri: `${extension.assets.download.fallbackUri}?${operationParam}=true`
@@ -699,7 +663,6 @@ export class ExtensionGalleryService implements IExtensionGalleryService {
 			.then(context => download(zipPath, context))
 			.then(() => log(new Date().getTime() - startTime))
 			.then(() => zipPath);
->>>>>>> vscode/release/1.30
 	}
 
 	getReadme(extension: IGalleryExtension, token: CancellationToken): Promise<string> {
@@ -788,17 +751,7 @@ export class ExtensionGalleryService implements IExtensionGalleryService {
 				return this.getLastValidExtensionVersion(rawExtension, versions)
 					.then(rawVersion => {
 						if (rawVersion) {
-<<<<<<< HEAD
-							extension.properties.dependencies = getExtensions(rawVersion, PropertyType.Dependency);
-							extension.properties.engine = getEngine(rawVersion);
-							// {{SQL CARBON EDIT}}
-							extension.assets.download = getVersionAsset(rawVersion, AssetType.VSIX);
-							extension.assets.downloadPage = getVersionAsset(rawVersion, AssetType.DownloadPage);
-							extension.version = rawVersion.version;
-							return extension;
-=======
 							return toExtension(rawExtension, rawVersion, 0, query);
->>>>>>> vscode/release/1.30
 						}
 						return null;
 					});

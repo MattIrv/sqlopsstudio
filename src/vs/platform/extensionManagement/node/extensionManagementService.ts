@@ -163,41 +163,6 @@ export class ExtensionManagementService extends Disposable implements IExtension
 
 	private collectFiles(extension: ILocalExtension): Promise<IFile[]> {
 
-<<<<<<< HEAD
-		return validateLocalExtension(zipPath)
-			.then(manifest => {
-				const identifier = { id: getLocalExtensionIdFromManifest(manifest) };
-				// {{SQL CARBON EDIT - Remove VS Code version check}}
-				// if (manifest.engines && manifest.engines.vscode && !isEngineValid(manifest.engines.vscode)) {
-				// 	return TPromise.wrapError<ILocalExtension>(new Error(nls.localize('incompatible', "Unable to install Extension '{0}' as it is not compatible with Code '{1}'.", identifier.id, pkg.version)));
-				// }
-				return this.removeIfExists(identifier.id)
-					.then(
-					() => this.checkOutdated(manifest)
-						.then(validated => {
-							if (validated) {
-								this.logService.info('Installing the extension:', identifier.id);
-								this._onInstallExtension.fire({ identifier, zipPath });
-
-								// {{SQL CARBON EDIT}}
-								// Until there's a gallery for SQL Ops Studio, skip retrieving the metadata from the gallery
-								return this.installExtension({ zipPath, id: identifier.id, metadata: null })
-									.then(
-									local => this._onDidInstallExtension.fire({ identifier, zipPath, local, operation: InstallOperation.Install }),
-									error => { this._onDidInstallExtension.fire({ identifier, zipPath, error, operation: InstallOperation.Install }); return TPromise.wrapError(error); }
-									);
-								/*
-								return this.getMetadata(getGalleryExtensionId(manifest.publisher, manifest.name))
-									.then(
-									metadata => this.installFromZipPath(identifier, zipPath, metadata, manifest),
-									error => this.installFromZipPath(identifier, zipPath, null, manifest));
-											local => { this.logService.info('Successfully installed the extension:', identifier.id); return local; },
-								*/
-							}
-							return null;
-						}),
-					e => TPromise.wrapError(new Error(nls.localize('restartCode', "Please restart Azure Data Studio before reinstalling {0}.", manifest.displayName || manifest.name))));
-=======
 		const collectFilesFromDirectory = async (dir): Promise<string[]> => {
 			let entries = await pfs.readdir(dir);
 			entries = entries.map(e => path.join(dir, e));
@@ -213,7 +178,6 @@ export class ExtensionManagementService extends Disposable implements IExtension
 						.then(result => collectFilesFromDirectory(entry)
 							.then(files => ([...result, ...files])));
 				}
->>>>>>> vscode/release/1.30
 			});
 			return promise;
 		};
@@ -233,9 +197,10 @@ export class ExtensionManagementService extends Disposable implements IExtension
 					return getManifest(zipPath)
 						.then(manifest => {
 							const identifier = { id: getLocalExtensionIdFromManifest(manifest) };
-							if (manifest.engines && manifest.engines.vscode && !isEngineValid(manifest.engines.vscode)) {
-								return Promise.reject(new Error(nls.localize('incompatible', "Unable to install extension '{0}' as it is not compatible with VS Code '{1}'.", identifier.id, pkg.version)));
-							}
+							// {{SQL CARBON EDIT - Remove VS Code version check}}
+							// if (manifest.engines && manifest.engines.vscode && !isEngineValid(manifest.engines.vscode)) {
+							// 	return Promise.reject(new Error(nls.localize('incompatible', "Unable to install extension '{0}' as it is not compatible with VS Code '{1}'.", identifier.id, pkg.version)));
+							// }
 							return this.removeIfExists(identifier.id)
 								.then(
 									() => {
@@ -248,19 +213,27 @@ export class ExtensionManagementService extends Disposable implements IExtension
 											.then(() => {
 												this.logService.info('Installing the extension:', identifier.id);
 												this._onInstallExtension.fire({ identifier, zipPath });
-												return this.getMetadata(getGalleryExtensionId(manifest.publisher, manifest.name))
-													.then(
-														metadata => this.installFromZipPath(identifier, zipPath, metadata, type, token),
-														error => this.installFromZipPath(identifier, zipPath, null, type, token))
-													.then(
-														() => { this.logService.info('Successfully installed the extension:', identifier.id); return identifier; },
-														e => {
-															this.logService.error('Failed to install the extension:', identifier.id, e.message);
-															return Promise.reject(e);
-														});
+												// {{SQL CARBON EDIT}}
+												// Until there's a gallery for SQL Ops Studio, skip retrieving the metadata from the gallery
+												return this.installExtension({ zipPath, id: identifier.id, metadata: null }, type, token)
+												.then(
+													local => this._onDidInstallExtension.fire({ identifier, zipPath, local, operation: InstallOperation.Install }),
+													error => { this._onDidInstallExtension.fire({ identifier, zipPath, error, operation: InstallOperation.Install }); return TPromise.wrapError(error); }
+												);
+												// return this.getMetadata(getGalleryExtensionId(manifest.publisher, manifest.name))
+												// 	.then(
+												// 		metadata => this.installFromZipPath(identifier, zipPath, metadata, type, token),
+												// 		error => this.installFromZipPath(identifier, zipPath, null, type, token))
+												// 	.then(
+												// 		() => { this.logService.info('Successfully installed the extension:', identifier.id); return identifier; },
+												// 		e => {
+												// 			this.logService.error('Failed to install the extension:', identifier.id, e.message);
+												// 			return Promise.reject(e);
+												// 		});
 											});
 									},
-									e => Promise.reject(new Error(nls.localize('restartCode', "Please restart VS Code before reinstalling {0}.", manifest.displayName || manifest.name))));
+									// {{SQL CARBON EDIT}}
+									e => Promise.reject(new Error(nls.localize('restartCode', "Please restart Azure Data Studio before reinstalling {0}.", manifest.displayName || manifest.name))));
 						});
 				});
 		});
@@ -277,20 +250,6 @@ export class ExtensionManagementService extends Disposable implements IExtension
 		return this.downloadService.download(vsix, downloadedLocation).then(() => URI.file(downloadedLocation));
 	}
 
-<<<<<<< HEAD
-	// private installFromZipPath(identifier: IExtensionIdentifier, zipPath: string, metadata: IGalleryMetadata, manifest: IExtensionManifest): TPromise<ILocalExtension> {
-	// 	return this.toNonCancellablePromise(this.getInstalled()
-	// 		.then(installed => {
-	// 			const operation = this.getOperation({ id: getIdFromLocalExtensionId(identifier.id), uuid: identifier.uuid }, installed);
-	// 			return this.installExtension({ zipPath, id: identifier.id, metadata })
-	// 				.then(local => this.installDependenciesAndPackExtensions(local, null).then(() => local, error => this.uninstall(local, true).then(() => TPromise.wrapError(error), () => TPromise.wrapError(error))))
-	// 				.then(
-	// 					local => { this._onDidInstallExtension.fire({ identifier, zipPath, local, operation }); return local; },
-	// 					error => { this._onDidInstallExtension.fire({ identifier, zipPath, operation, error }); return TPromise.wrapError(error); }
-	// 				);
-	// 		}));
-	// }
-=======
 	private removeIfExists(id: string): Promise<void> {
 		return this.getInstalled(LocalExtensionType.User)
 			.then(installed => installed.filter(i => i.identifier.id === id)[0])
@@ -309,7 +268,6 @@ export class ExtensionManagementService extends Disposable implements IExtension
 					);
 			}));
 	}
->>>>>>> vscode/release/1.30
 
 	async installFromGallery(extension: IGalleryExtension): Promise<void> {
 		const startTime = new Date().getTime();
@@ -450,15 +408,8 @@ export class ExtensionManagementService extends Disposable implements IExtension
 							error => Promise.reject(new ExtensionManagementError(this.joinErrors(error).message, INSTALL_ERROR_VALIDATING))
 						);
 				},
-<<<<<<< HEAD
-				error => TPromise.wrapError<InstallableExtension>(new ExtensionManagementError(this.joinErrors(error).message, INSTALL_ERROR_GALLERY)));
-
-			}
-
-=======
 				error => Promise.reject(new ExtensionManagementError(this.joinErrors(error).message, INSTALL_ERROR_DOWNLOADING)));
 	}
->>>>>>> vscode/release/1.30
 
 	private installExtension(installableExtension: InstallableExtension, type: LocalExtensionType, token: CancellationToken): Promise<ILocalExtension> {
 		return this.unsetUninstalledAndGetLocal(installableExtension.id)

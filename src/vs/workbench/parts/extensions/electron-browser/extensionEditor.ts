@@ -344,6 +344,16 @@ export class ExtensionEditor extends BaseEditor {
 					this.license.style.display = 'none';
 				}
 
+				// {{SQL CARBON EDIT}}
+				if (extension.licenseUrl) {
+					this.license.onclick = finalHandler(() => window.open(extension.licenseUrl));
+					this.license.style.display = 'initial';
+				} else {
+					this.license.onclick = null;
+					this.license.style.display = 'none';
+				}
+				// {{SQL CARBON EDIT}} - End
+
 				if (extension.repository) {
 					this.repository.onclick = finalHandler(() => window.open(extension.repository));
 					this.repository.style.display = 'initial';
@@ -353,45 +363,13 @@ export class ExtensionEditor extends BaseEditor {
 					this.repository.style.display = 'none';
 				}
 
-				const install = this.instantiationService.createInstance(InstallCountWidget, this.installCount, { extension });
-				this.transientDisposables.push(install);
+				// {{SQL CARBON EDIT}}
+				// const install = this.instantiationService.createInstance(InstallCountWidget, this.installCount, { extension });
+				// this.transientDisposables.push(install);
 
-				const ratings = this.instantiationService.createInstance(RatingsWidget, this.rating, { extension });
-				this.transientDisposables.push(ratings);
+				// const ratings = this.instantiationService.createInstance(RatingsWidget, this.rating, { extension });
+				// this.transientDisposables.push(ratings);
 
-<<<<<<< HEAD
-
-		} else {
-			this.name.onclick = null;
-			this.rating.onclick = null;
-			this.publisher.onclick = null;
-		}
-
-		// {{SQL CARBON EDIT}}
-		if (extension.licenseUrl) {
-			this.license.onclick = finalHandler(() => window.open(extension.licenseUrl));
-			this.license.style.display = 'initial';
-		} else {
-			this.license.onclick = null;
-			this.license.style.display = 'none';
-		}
-
-		if (extension.repository) {
-			this.repository.onclick = finalHandler(() => window.open(extension.repository));
-			this.repository.style.display = 'initial';
-		}
-		else {
-			this.repository.onclick = null;
-			this.repository.style.display = 'none';
-		}
-
-		// {{SQL CARBON EDIT}}
-		//const install = this.instantiationService.createInstance(InstallWidget, this.installCount, { extension });
-		//this.transientDisposables.push(install);
-
-		//const ratings = this.instantiationService.createInstance(RatingsWidget, this.rating, { extension });
-		//this.transientDisposables.push(ratings);
-=======
 				const maliciousStatusAction = this.instantiationService.createInstance(MaliciousStatusLabelAction, true);
 				const disabledStatusAction = this.instantiationService.createInstance(DisabledStatusLabelAction, runningExtensions);
 				const installAction = this.instantiationService.createInstance(CombinedInstallAction);
@@ -412,7 +390,6 @@ export class ExtensionEditor extends BaseEditor {
 
 				this.setSubText(extension, reloadAction);
 				this.content.innerHTML = ''; // Clear content before setting navbar actions.
->>>>>>> vscode/release/1.30
 
 				this.navbar.clear();
 				this.navbar.onChange(this.onNavbarChange.bind(this, extension), this, this.transientDisposables);
@@ -503,15 +480,9 @@ export class ExtensionEditor extends BaseEditor {
 		}));
 	}
 
-<<<<<<< HEAD
-		if (extension.hasReadme()) {
-			this.navbar.push(NavbarSection.Readme, localize('details', "Details"), localize('detailstooltip', "Extension details, rendered from the extension's 'README.md' file"));
-		this.editorLoadComplete = true;
-=======
 	focus(): void {
 		if (this.activeElement) {
 			this.activeElement.focus();
->>>>>>> vscode/release/1.30
 		}
 	}
 

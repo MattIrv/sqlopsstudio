@@ -93,6 +93,12 @@ export class ExtensionHostProcessManager extends Disposable {
 		super.dispose();
 	}
 
+	// {{SQL CARBON EDIT}}
+	public getExtenstionHostProcessWorker(): IExtensionHostStarter {
+		return this._extensionHostProcessWorker;
+	}
+	// {{SQL CARBON EDIT}} - End
+
 	public canProfileExtensionHost(): boolean {
 		return this._extensionHostProcessWorker && Boolean(this._extensionHostProcessWorker.getInspectPort());
 	}
