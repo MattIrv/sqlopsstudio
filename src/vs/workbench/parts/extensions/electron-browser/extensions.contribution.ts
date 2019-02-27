@@ -51,7 +51,7 @@ import { ExtensionsAutoProfiler } from 'vs/workbench/parts/extensions/electron-b
 // Singletons
 registerSingleton(IExtensionsWorkbenchService, ExtensionsWorkbenchService);
 registerSingleton(IExtensionTipsService, ExtensionTipsService);
-registerSingleton(IExtensionHostProfileService, ExtensionHostProfileService);
+registerSingleton(IExtensionHostProfileService, ExtensionHostProfileService, true);
 
 const workbenchRegistry = Registry.as<IWorkbenchContributionsRegistry>(WorkbenchExtensions.Workbench);
 workbenchRegistry.registerWorkbenchContribution(StatusUpdater, LifecyclePhase.Restored);
@@ -256,7 +256,7 @@ jsonRegistry.registerSchema(ExtensionsConfigurationSchemaId, ExtensionsConfigura
 // Register Commands
 CommandsRegistry.registerCommand('_extensions.manage', (accessor: ServicesAccessor, extensionId: string) => {
 	const extensionService = accessor.get(IExtensionsWorkbenchService);
-	const extension = extensionService.local.filter(e => areSameExtensions(e, { id: extensionId }));
+	const extension = extensionService.local.filter(e => areSameExtensions(e.identifier, { id: extensionId }));
 	if (extension.length === 1) {
 		extensionService.open(extension[0]);
 	}
