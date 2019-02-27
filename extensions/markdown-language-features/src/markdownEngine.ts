@@ -130,7 +130,7 @@ export class MarkdownEngine {
 	// {{SQL CARBON EDIT}} - Add renderText method
 	public async renderText(document: vscode.Uri, text: string): Promise<string> {
 		const engine = await this.getEngine(this.getConfig(document));
-		return engine.renderer.render(text);
+		return engine.render(text);
 	}
 	// {{SQL CARBON EDIT}} - End
 

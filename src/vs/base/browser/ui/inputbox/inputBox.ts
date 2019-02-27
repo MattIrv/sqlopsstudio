@@ -98,34 +98,16 @@ export class InputBox extends Widget {
 	private message: IMessage | null;
 	private placeholder: string;
 	private ariaLabel: string;
-<<<<<<< HEAD
-	private validation: IInputValidator;
-	private state = 'idle';
-	private cachedHeight: number;
-
-	// {{SQL CARBON EDIT}}
-	protected showValidationMessage: boolean;
-	protected inputBackground: Color;
-	protected inputForeground: Color;
-	protected inputBorder: Color;
-
-	private inputValidationInfoBorder: Color;
-	private inputValidationInfoBackground: Color;
-	private inputValidationInfoForeground: Color;
-	private inputValidationWarningBorder: Color;
-	private inputValidationWarningBackground: Color;
-	private inputValidationWarningForeground: Color;
-	private inputValidationErrorBorder: Color;
-	private inputValidationErrorBackground: Color;
-	private inputValidationErrorForeground: Color;
-=======
 	private validation?: IInputValidator;
 	private state: string | null = 'idle';
 	private cachedHeight: number | null;
 
-	private inputBackground?: Color | null;
-	private inputForeground?: Color | null;
-	private inputBorder?: Color | null;
+	// {{SQL CARBON EDIT}} - Add showValidationMessage and set inputBackground, inputForeground, and inputBorder as protected
+	protected showValidationMessage: boolean;
+	protected inputBackground?: Color | null;
+	protected inputForeground?: Color | null;
+	protected inputBorder?: Color | null;
+	// {{SQL CARBON EDIT}} - End
 
 	private inputValidationInfoBorder?: Color | null;
 	private inputValidationInfoBackground?: Color | null;
@@ -136,7 +118,6 @@ export class InputBox extends Widget {
 	private inputValidationErrorBorder?: Color | null;
 	private inputValidationErrorBackground?: Color | null;
 	private inputValidationErrorForeground?: Color | null;
->>>>>>> vscode/release/1.31
 
 	private _onDidChange = this._register(new Emitter<string>());
 	public readonly onDidChange: Event<string> = this._onDidChange.event;

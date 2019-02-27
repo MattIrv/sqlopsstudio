@@ -25,7 +25,6 @@ import { IStorageService, StorageScope } from 'vs/platform/storage/common/storag
 import { IExtensionService } from 'vs/workbench/services/extensions/common/extensions';
 import { IExtensionManagementService, IExtensionIdentifier } from 'vs/platform/extensionManagement/common/extensionManagement';
 import { Disposable, IDisposable } from 'vs/base/common/lifecycle';
-import { getIdFromLocalExtensionId } from 'vs/platform/extensionManagement/common/extensionManagementUtil';
 import { Deferred } from 'sql/base/common/promise';
 import { SqlSessionManager } from 'sql/workbench/services/notebook/common/sqlSessionManager';
 import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
@@ -458,9 +457,9 @@ export class NotebookService extends Disposable implements INotebookService {
 	}
 
 	private removeContributedProvidersFromCache(identifier: IExtensionIdentifier, extensionService: IExtensionService) {
-		let extensionid = getIdFromLocalExtensionId(identifier.id);
 		extensionService.getExtensions().then(i => {
-			let extension = i.find(c => c.id === extensionid);
+			// TODO mairvine: Make sure that checking c.identifier.value against identifier.id is correct
+			let extension = i.find(c => c.identifier.value === identifier.id);
 			if (extension && extension.contributes['notebookProvider']) {
 				let id = extension.contributes['notebookProvider'].providerId;
 				delete this.providersMemento.notebookProviderCache[id];

@@ -1281,8 +1281,12 @@ export class SearchView extends Viewlet implements IViewlet, IPanel {
 			this.updateTitleArea();
 			const hasResults = !this.viewModel.searchResult.isEmpty();
 
-				this.searchSubmitted = true;
-				this.updateActions();
+			if (completed && completed.limitHit) {
+				this.searchWidget.searchInput.showMessage({
+					content: nls.localize('searchMaxResultsWarning', "The result set only contains a subset of all matches. Please be more specific in your search to narrow down the results."),
+					type: MessageType.WARNING
+				});
+			}
 
 			if (!hasResults) {
 				const hasExcludes = !!excludePatternText;
@@ -1305,12 +1309,6 @@ export class SearchView extends Viewlet implements IViewlet, IPanel {
 				aria.status(message);
 
 				dom.hide(this.resultsElement);
-
-					// Indicate as status to ARIA
-					aria.status(message);
-
-					this.tree.onHidden();
-					dom.hide(this.resultsElement);
 
 					const messageEl = this.clearMessage();
 					const p = dom.append(messageEl, $('p', undefined, message));
@@ -1352,7 +1350,6 @@ export class SearchView extends Viewlet implements IViewlet, IPanel {
 					// Indicate final search result count for ARIA
 					aria.status(nls.localize('ariaSearchResultsStatus', "Search returned {0} results in {1} files", this.viewModel.searchResult.count(), this.viewModel.searchResult.fileCount()));
 				}
-			});
 		};
 
 		const onError = (e: any) => {

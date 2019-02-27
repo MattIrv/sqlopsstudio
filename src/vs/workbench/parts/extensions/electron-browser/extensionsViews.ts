@@ -552,7 +552,7 @@ export class ExtensionsListView extends ViewletPanel {
 	private getAllMarketplaceModel(query: Query, options: IQueryOptions): Promise<IPagedModel<IExtension>> {
 		const value = query.value.trim().toLowerCase();
 		return this.extensionsWorkbenchService.queryLocal()
-			.then(result => result.filter(e => e.type === LocalExtensionType.User))
+			.then(result => result.filter(e => e.type === ExtensionType.User))
 			.then(local => {
 				return this.tipsService.getOtherRecommendations().then((recommmended) => {
 					const installedExtensions = local.map(x => `${x.publisher}.${x.name}`);

@@ -115,13 +115,14 @@ export interface IExtensionsConfiguration {
 	extensionsPolicy: string;
 }
 
-<<<<<<< HEAD
 // {{SQL CARBON EDIT}}
 export enum ExtensionsPolicy {
 	allowAll = 'allowAll',
 	allowNone = 'allowNone',
 	allowMicrosoft = 'allowMicrosoft'
-=======
+}
+// {{SQL CARBON EDIT}} - End
+
 export interface IExtensionContainer {
 	extension: IExtension | null;
 	update(): void;
@@ -152,5 +153,4 @@ export class ExtensionContainers extends Disposable {
 			}
 		}
 	}
->>>>>>> vscode/release/1.31
 }
