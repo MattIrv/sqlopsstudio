@@ -142,7 +142,8 @@ export interface ICustomViewDescriptor extends ITreeViewDescriptor {
 }
 
 type ViewContainerExtensionPointType = { [loc: string]: IUserFriendlyViewsContainerDescriptor[] };
-const viewsContainersExtensionPoint: IExtensionPoint<ViewContainerExtensionPointType> = ExtensionsRegistry.registerExtensionPoint<ViewContainerExtensionPointType>({
+// {{SQL CARBON EDIT}} - Export viewsContainersExtensionPoint
+export const viewsContainersExtensionPoint: IExtensionPoint<ViewContainerExtensionPointType> = ExtensionsRegistry.registerExtensionPoint<ViewContainerExtensionPointType>({
 	extensionPoint: 'viewsContainers',
 	jsonSchema: viewsContainersContribution,
 	isDynamic: true

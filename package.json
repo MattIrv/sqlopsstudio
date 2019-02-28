@@ -192,6 +192,8 @@
   },
   "resolutions": {
     "rc": "1.2.8",
-    "event-stream": "3.3.4"
+    "event-stream": "3.3.4",
+    "natives": "1.1.6",
+    "@types/node": "10.12.12"
   }
 }

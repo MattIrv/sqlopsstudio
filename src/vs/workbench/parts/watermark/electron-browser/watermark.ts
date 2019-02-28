@@ -42,12 +42,12 @@ interface WatermarkEntry {
 // {{SQL CARBON EDIT}}
 const showServers: WatermarkEntry = {
 	text: nls.localize('watermark.showServers', 'Show Servers'),
-	ids: [OpenConnectionsViewletAction.ID]
+	id: OpenConnectionsViewletAction.ID
 };
 
 const newSqlFile: WatermarkEntry = {
 	text: nls.localize('watermark.newSqlFile', 'New SQL File'),
-	ids: [GlobalNewUntitledFileAction.ID]
+	id: GlobalNewUntitledFileAction.ID
 };
 
 const showCommands: WatermarkEntry = {

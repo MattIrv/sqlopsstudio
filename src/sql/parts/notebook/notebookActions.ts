@@ -24,7 +24,7 @@ import { IConnectionDialogService } from 'sql/workbench/services/connection/comm
 const msgLoading = localize('loading', 'Loading kernels...');
 const kernelLabel: string = localize('Kernel', 'Kernel: ');
 const attachToLabel: string = localize('AttachTo', 'Attach to: ');
-const msgLoadingContexts = { text: localize('loadingContexts', 'Loading contexts...') };
+const msgLoadingContexts = localize('loadingContexts', 'Loading contexts...');
 const msgAddNewConnection = localize('addNewConnection', 'Add new connection');
 const msgSelectConnection = localize('selectConnection', 'Select connection');
 const msgLocalHost = localize('localhost', 'localhost');
@@ -239,8 +239,7 @@ export class KernelsDropdown extends SelectBox {
 			labelText: kernelLabel,
 			labelOnTop: false
 		};
-		let optionItem = { text: msgLoading };
-		super([optionItem], optionItem, contextViewProvider, container, selectBoxOptionsWithLabel);
+		super([msgLoading], msgLoading, contextViewProvider, container, selectBoxOptionsWithLabel);
 		if (modelRegistered) {
 			modelRegistered
 				.then((model) => this.updateModel(model))

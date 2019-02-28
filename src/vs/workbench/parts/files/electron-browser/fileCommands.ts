@@ -103,7 +103,8 @@ function save(
 	fileService: IFileService,
 	untitledEditorService: IUntitledEditorService,
 	textFileService: ITextFileService,
-	editorGroupService: IEditorGroupsService
+	editorGroupService: IEditorGroupsService,
+	queryEditorService: IQueryEditorService
 ): Promise<any> {
 
 	function ensureForcedSave(options?: ISaveOptions): ISaveOptions {
@@ -120,7 +121,7 @@ function save(
 		// {{SQL CARBON EDIT}}
 		let editorInput = editorService.activeEditor;
 		if (editorInput instanceof EditorInput && !(<EditorInput>editorInput).savingSupported) {
-			return TPromise.as(false);
+			return Promise.resolve(false);
 		}
 
 		// Save As (or Save untitled with associated path)

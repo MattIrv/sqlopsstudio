@@ -116,17 +116,8 @@ class Extension implements IExtension {
 			return undefined;
 		}
 
-		return product.extensionsGallery.itemUrl && `${product.extensionsGallery.itemUrl}?itemName=${this.publisher}.${this.name}`;
-	}
-
-	get downloadUrl(): string {
-		if (!product.extensionsGallery) {
-			return null;
-		}
-
 		// {{SQL CARBON EDIT}}
-		return this.gallery && this.gallery.assets && this.gallery.assets.download && this.gallery.assets.download.uri;
-		//return `${product.extensionsGallery.serviceUrl}/publishers/${this.publisher}/vsextensions/${this.name}/${this.latestVersion}/vspackage`;
+		return product.extensionsGallery.itemUrl && `${product.extensionsGallery.itemUrl}?itemName=${this.publisher}.${this.name}`;
 	}
 
 	// {{SQL CARBON EDIT}}

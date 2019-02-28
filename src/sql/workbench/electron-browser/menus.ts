@@ -26,7 +26,7 @@ import { URI } from 'vs/base/common/uri';
 import { ILabelService } from 'vs/platform/label/common/label';
 import { ConfigWatcher } from 'vs/base/node/config';
 import { IUserFriendlyKeybinding } from 'vs/platform/keybinding/common/keybinding';
-import { Emitter, Event, once } from 'vs/base/common/event';
+import { Emitter, Event } from 'vs/base/common/event';
 import { IStateService } from 'vs/platform/state/common/state';
 import { ILogService } from 'vs/platform/log/common/log';
 
@@ -94,7 +94,6 @@ export class CodeMenu {
 		// Listen to some events from window service to update menu
 		this.historyMainService.onRecentlyOpenedChange(() => this.updateMenu());
 		this.windowsMainService.onWindowsCountChanged(e => this.onWindowsCountChanged(e));
-		this.windowsMainService.onActiveWindowChanged(() => this.updateWorkspaceMenuItems());
 		this.windowsMainService.onWindowReady(() => this.updateWorkspaceMenuItems());
 		this.windowsMainService.onWindowClose(() => this.updateWorkspaceMenuItems());
 
@@ -1417,14 +1416,11 @@ export class KeybindingsResolver {
 		});
 
 		// Resolve keybindings when any first window is loaded
-		const onceOnWindowReady = once(this.windowsMainService.onWindowReady);
+		const onceOnWindowReady = Event.once(this.windowsMainService.onWindowReady);
 		onceOnWindowReady(win => this.resolveKeybindings(win));
 
 		// Resolve keybindings again when keybindings.json changes
 		this.keybindingsWatcher.onDidUpdateConfiguration(() => this.resolveKeybindings());
-
-		// Resolve keybindings when window reloads because an installed extension could have an impact
-		this.windowsMainService.onWindowReload(() => this.resolveKeybindings());
 	}
 
 	private resolveKeybindings(win = this.windowsMainService.getLastActiveWindow()): void {

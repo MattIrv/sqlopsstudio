@@ -17,7 +17,6 @@ import { IConnectionProfile } from 'sqlops';
 
 import { TreeItemCollapsibleState } from 'vs/workbench/common/views';
 import { createDecorator } from 'vs/platform/instantiation/common/instantiation';
-import { TPromise } from 'vs/base/common/winjs.base';
 import { equalsIgnoreCase } from 'vs/base/common/strings';
 import { hash } from 'vs/base/common/hash';
 import { generateUuid } from 'vs/base/common/uuid';
@@ -28,7 +27,7 @@ export const IOEShimService = createDecorator<IOEShimService>(SERVICE_ID);
 
 export interface IOEShimService {
 	_serviceBrand: any;
-	getChildren(node: ITreeItem, identifier: any): TPromise<ITreeItem[]>;
+	getChildren(node: ITreeItem, identifier: any): Promise<ITreeItem[]>;
 	providerExists(providerId: string): boolean;
 }
 
@@ -47,7 +46,7 @@ export class OEShimService implements IOEShimService {
 	) {
 	}
 
-	private async createSession(providerId: string, node: ITreeItem): TPromise<string> {
+	private async createSession(providerId: string, node: ITreeItem): Promise<string> {
 		let deferred = new Deferred<string>();
 		let connProfile = new ConnectionProfile(this.capabilities, node.payload);
 		connProfile.saveProfile = false;
@@ -66,10 +65,10 @@ export class OEShimService implements IOEShimService {
 			disp.dispose();
 			deferred.resolve(sessionResp.sessionId);
 		});
-		return TPromise.wrap(deferred.promise);
+		return Promise.resolve(deferred.promise);
 	}
 
-	public async getChildren(node: ITreeItem, identifier: any): TPromise<ITreeItem[]> {
+	public async getChildren(node: ITreeItem, identifier: any): Promise<ITreeItem[]> {
 		try {
 			if (!this.sessionMap.has(identifier)) {
 				this.sessionMap.set(identifier, new Map<number, string>());
@@ -99,14 +98,14 @@ export class OEShimService implements IOEShimService {
 				userName: undefined,
 			};
 			treeNode.connection = new ConnectionProfile(this.capabilities, profile);
-			return TPromise.wrap(this.oe.resolveTreeNodeChildren({
+			return Promise.resolve(this.oe.resolveTreeNodeChildren({
 				success: undefined,
 				sessionId,
 				rootNode: undefined,
 				errorMessage: undefined
 			}, treeNode).then(e => e.map(n => this.mapNodeToITreeItem(n, node))));
 		} catch (e) {
-			return TPromise.as([]);
+			return Promise.resolve([]);
 		}
 	}
 

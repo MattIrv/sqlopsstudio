@@ -6,7 +6,6 @@
 'use strict';
 
 import * as sqlops from 'sqlops';
-import { TPromise } from 'vs/base/common/winjs.base';
 import { Disposable } from 'vs/workbench/api/node/extHostTypes';
 import {
 	ExtHostAccountManagementShape,
@@ -111,7 +110,7 @@ export class ExtHostAccountManagement extends ExtHostAccountManagementShape {
 	}
 
 	public $accountsChanged(handle: number, accounts: sqlops.Account[]): Thenable<void> {
-		return this._onDidChangeAccounts.fire({ accounts: accounts });
+		return Promise.resolve(this._onDidChangeAccounts.fire({ accounts: accounts }));
 	}
 
 	public $registerAccountProvider(providerMetadata: sqlops.AccountProviderMetadata, provider: sqlops.AccountProvider): Disposable {
@@ -158,7 +157,7 @@ export class ExtHostAccountManagement extends ExtHostAccountManagementShape {
 	private _withProvider<R>(handle: number, callback: (provider: sqlops.AccountProvider) => Thenable<R>): Thenable<R> {
 		let provider = this._providers[handle];
 		if (provider === undefined) {
-			return TPromise.wrapError(new Error(`Provider ${handle} not found.`));
+			return Promise.reject(new Error(`Provider ${handle} not found.`));
 		}
 		return callback(provider.provider);
 	}

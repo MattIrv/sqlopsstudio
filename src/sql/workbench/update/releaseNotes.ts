@@ -6,7 +6,6 @@
 'use strict';
 
 import nls = require('vs/nls');
-import { TPromise } from 'vs/base/common/winjs.base';
 import { Action } from 'vs/base/common/actions';
 import pkg from 'vs/platform/node/package';
 import product from 'vs/platform/node/product';
@@ -23,7 +22,7 @@ export class OpenGettingStartedInBrowserAction extends Action {
 		super('update.openGettingStartedGuide', nls.localize('gettingStarted', "Get Started"), null, true);
 	}
 
-	run(): TPromise<any> {
+	run(): Promise<any> {
 		const uri = URI.parse(product.gettingStartedUrl);
 		return this.openerService.open(uri);
 	}

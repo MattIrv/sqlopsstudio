@@ -76,6 +76,7 @@ import { GlobalStorageDatabaseChannel } from 'vs/platform/storage/node/storageIp
 import { generateUuid } from 'vs/base/common/uuid';
 // {{SQL CARBON EDIT}}
 import { CodeMenu } from 'sql/workbench/electron-browser/menus';
+import * as platform from 'vs/base/common/platform';
 // {{SQL CARBON EDIT}} - End
 import { startsWith } from 'vs/base/common/strings';
 import { BackupMainService } from 'vs/platform/backup/electron-main/backupMainService';

@@ -6,7 +6,6 @@
 'use strict';
 
 import * as sqlops from 'sqlops';
-import { TPromise } from 'vs/base/common/winjs.base';
 import { CredentialManagementEvents, ICredentialsService } from 'sql/platform/credentials/common/credentialsService';
 import { IDisposable } from 'vs/base/common/lifecycle';
 
@@ -20,17 +19,17 @@ export class CredentialsTestProvider implements sqlops.CredentialProvider {
 			credentialId: credentialId,
 			password: password
 		};
-		return TPromise.as(true);
+		return Promise.resolve(true);
 	}
 
 	readCredential(credentialId: string): Thenable<sqlops.Credential> {
-		return TPromise.as(this.storedCredentials[credentialId]);
+		return Promise.resolve(this.storedCredentials[credentialId]);
 	}
 
 	deleteCredential(credentialId: string): Thenable<boolean> {
 		let exists = this.storedCredentials[credentialId] !== undefined;
 		delete this.storedCredentials[credentialId];
-		return TPromise.as(exists);
+		return Promise.resolve(exists);
 	}
 }
 

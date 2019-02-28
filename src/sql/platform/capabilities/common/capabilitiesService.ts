@@ -21,7 +21,6 @@ import { IStorageService, StorageScope } from 'vs/platform/storage/common/storag
 import { Registry } from 'vs/platform/registry/common/platform';
 import { IExtensionManagementService } from 'vs/platform/extensionManagement/common/extensionManagement';
 import { IExtensionService } from 'vs/workbench/services/extensions/common/extensions';
-import { getIdFromLocalExtensionId } from 'vs/platform/extensionManagement/common/extensionManagementUtil';
 
 export const SERVICE_ID = 'capabilitiesService';
 export const HOST_NAME = 'sqlops';
@@ -132,9 +131,9 @@ export class CapabilitiesService extends Disposable implements ICapabilitiesServ
 		});
 
 		this._register(extentionManagementService.onDidUninstallExtension(({ identifier }) => {
-			let extensionid = getIdFromLocalExtensionId(identifier.id);
 			extensionService.getExtensions().then(i => {
-				let extension = i.find(c => c.id === extensionid);
+				// TODO mairvine - make sure this change is valid
+				let extension = i.find(c => c.identifier.value === identifier.id);
 				let id = extension.contributes['connectionProvider'].providerId;
 				delete this.capabilities.connectionProviderCache[id];
 			});

@@ -5,7 +5,6 @@
 
 import { IDataSource, ITree, IRenderer, ContextMenuEvent } from 'vs/base/parts/tree/browser/tree';
 import { ViewContainer, TreeItemCollapsibleState, ITreeView, ITreeViewDataProvider, TreeViewItemHandleArg, ITreeItem as vsITreeItem } from 'vs/workbench/common/views';
-import { TPromise } from 'vs/base/common/winjs.base';
 import { Disposable, IDisposable } from 'vs/base/common/lifecycle';
 import { FileIconThemableWorkbenchTree } from 'vs/workbench/browser/parts/views/viewsViewlet';
 import { Emitter, Event } from 'vs/base/common/event';
@@ -120,7 +119,7 @@ export class CustomTreeView extends Disposable implements ITreeView {
 		return this.isVisible;
 	}
 
-	expand(itemOrItems: ITreeItem | ITreeItem[]): Thenable<void> {
+	expand(itemOrItems: ITreeItem | ITreeItem[]): Promise<void> {
 		if (this.tree) {
 			itemOrItems = Array.isArray(itemOrItems) ? itemOrItems : [itemOrItems];
 			return this.tree.expandAll(itemOrItems);
@@ -250,7 +249,7 @@ export class CustomTreeView extends Disposable implements ITreeView {
 		return Promise.resolve(null);
 	}
 
-	reveal(item: ITreeItem, parentChain?: ITreeItem[], options?: { select?: boolean, focus?: boolean }): Thenable<void> {
+	reveal(item: ITreeItem, parentChain?: ITreeItem[], options?: { select?: boolean, focus?: boolean }): Promise<void> {
 		if (this.tree && this.isVisible) {
 			options = options ? options : { select: false, focus: false };
 			const select = isUndefinedOrNull(options.select) ? false : options.select;
@@ -259,7 +258,7 @@ export class CustomTreeView extends Disposable implements ITreeView {
 			const root: Root = this.tree.getInput();
 			const promise = root.children ? Promise.resolve(null) : this.refresh(); // Refresh if root is not populated
 			return promise.then(() => {
-				var result = TPromise.as(null);
+				var result = Promise.resolve(null);
 				if (parentChain) {
 					parentChain.forEach((e) => {
 						result = result.then(() => this.tree.expand(e));
@@ -330,9 +329,9 @@ class TreeDataSource implements IDataSource {
 		return this.objectExplorerService.providerExists(node.childProvider) && node.collapsibleState !== TreeItemCollapsibleState.None;
 	}
 
-	getChildren(tree: ITree, node: ITreeItem): TPromise<any[]> {
+	getChildren(tree: ITree, node: ITreeItem): Promise<any[]> {
 		if (this.objectExplorerService.providerExists(node.childProvider)) {
-			return TPromise.wrap(this.progressService.withProgress({ location: this.container.id }, () => {
+			return Promise.resolve(this.progressService.withProgress({ location: this.container.id }, () => {
 				// this is replicating what vscode does when calling initial children
 				if (node instanceof Root) {
 					node = deepClone(node);
@@ -343,15 +342,15 @@ class TreeDataSource implements IDataSource {
 				return this.objectExplorerService.getChildren(node, this);
 			}));
 		}
-		return TPromise.as([]);
+		return Promise.resolve([]);
 	}
 
 	shouldAutoexpand(tree: ITree, node: ITreeItem): boolean {
 		return node.collapsibleState === TreeItemCollapsibleState.Expanded;
 	}
 
-	getParent(tree: ITree, node: any): TPromise<any> {
-		return TPromise.as(null);
+	getParent(tree: ITree, node: any): Promise<any> {
+		return Promise.resolve(null);
 	}
 }
 
@@ -391,8 +390,8 @@ class TreeRenderer implements IRenderer {
 
 		const icon = DOM.append(container, DOM.$('.custom-view-tree-node-item-icon'));
 		const resourceLabel = this.instantiationService.createInstance(ResourceLabel, container, {});
-		DOM.addClass(resourceLabel.element, 'custom-view-tree-node-item-resourceLabel');
-		const actionsContainer = DOM.append(resourceLabel.element, DOM.$('.actions'));
+		DOM.addClass(resourceLabel.element.element, 'custom-view-tree-node-item-resourceLabel');
+		const actionsContainer = DOM.append(resourceLabel.element.element, DOM.$('.actions'));
 		const actionBar = new ActionBar(actionsContainer, {
 			actionItemProvider: this.actionItemProvider,
 			actionRunner: new MultipleSelectionActionRunner(() => tree.getSelection())
@@ -413,9 +412,9 @@ class TreeRenderer implements IRenderer {
 
 		if ((resource || node.themeIcon) && !icon) {
 			const fileDecorations = this.configurationService.getValue<{ colors: boolean, badges: boolean }>('explorer.decorations');
-			templateData.resourceLabel.setLabel({ name: label, resource: resource ? resource : URI.parse('_icon_resource') }, { fileKind: this.getFileKind(node), title, fileDecorations: fileDecorations, extraClasses: ['custom-view-tree-node-item-resourceLabel'] });
+			templateData.resourceLabel.element.setResource({ name: label, resource: resource ? resource : URI.parse('_icon_resource') }, { fileKind: this.getFileKind(node), title, fileDecorations: fileDecorations, extraClasses: ['custom-view-tree-node-item-resourceLabel'] });
 		} else {
-			templateData.resourceLabel.setLabel({ name: label }, { title, hideIcon: true, extraClasses: ['custom-view-tree-node-item-resourceLabel'] });
+			templateData.resourceLabel.element.setResource({ name: label }, { title, hideIcon: true, extraClasses: ['custom-view-tree-node-item-resourceLabel'] });
 		}
 
 		if (templateId === TreeRenderer.TREE_TEMPLATE_ID) {
@@ -566,7 +565,7 @@ class MultipleSelectionActionRunner extends ActionRunner {
 		super();
 	}
 
-	runAction(action: IAction, context: any): TPromise<any> {
+	runAction(action: IAction, context: any): Promise<any> {
 		if (action instanceof MenuItemAction) {
 			const selection = this.getSelectedResources();
 			const filteredSelection = selection.filter(s => s !== context);

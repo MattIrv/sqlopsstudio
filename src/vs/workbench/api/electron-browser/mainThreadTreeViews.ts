@@ -130,7 +130,8 @@ export class MainThreadTreeViews extends Disposable implements MainThreadTreeVie
 	// {{SQL CARBON EDIT}}
 	private checkForDataExplorer(treeViewId: string): boolean {
 		const viewDescriptor: ITreeViewDescriptor = <ITreeViewDescriptor>ViewsRegistry.getView(treeViewId);
-		if (viewDescriptor.container.id === 'workbench.view.dataExplorer') {
+		const container = ViewsRegistry.getViewContainer(treeViewId);
+		if (container.id === 'workbench.view.dataExplorer') {
 			const dataProvider = new OETreeViewDataProvider(treeViewId, this._proxy);
 			this.objectExplorerService.registerProvider(treeViewId, dataProvider);
 			dataProvider.registerOnExpandCompleted(e => this.objectExplorerService.onNodeExpanded({

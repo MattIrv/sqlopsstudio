@@ -9,9 +9,9 @@ import { ITree, IRenderer } from 'vs/base/parts/tree/browser/tree';
 import { FileKind } from 'vs/platform/files/common/files';
 import { URI } from 'vs/base/common/uri';
 import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
-import { FileLabel } from 'vs/workbench/browser/labels';
 import { IFileTemplateData } from 'vs/workbench/parts/files/electron-browser/views/explorerViewer';
 import { toDisposable } from 'vs/base/common/lifecycle';
+import { ResourceLabel } from 'vs/workbench/browser/labels';
 
 const EmptyDisposable = toDisposable(() => null);
 
@@ -46,8 +46,10 @@ export class FileBrowserRenderer implements IRenderer {
 	 * Render template in a dom element based on template id
 	 */
 	public renderTemplate(tree: ITree, templateId: string, container: HTMLElement): IFileTemplateData {
+		// TODO mairvine - Check how VS Code does this stuff. They may use ResourceLabels on the class and then create individual labels from that
+		const resourceLabel = this.instantiationService.createInstance(ResourceLabel, container, {});
+		const label = resourceLabel.create(container);
 		const elementDisposable = EmptyDisposable;
-		const label = this.instantiationService.createInstance(FileLabel, container, void 0);
 		return { elementDisposable, label, container };
 	}
 

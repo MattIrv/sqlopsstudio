@@ -20,8 +20,7 @@ import { Registry } from 'vs/platform/registry/common/platform';
 import { isWindows, isLinux, isMacintosh } from 'vs/base/common/platform';
 import { IResourceInput } from 'vs/platform/editor/common/editor';
 import { IWorkbenchContributionsRegistry, Extensions as WorkbenchExtensions } from 'vs/workbench/common/contributions';
-// {{SQL CARBON EDIT}} - Import IEditor
-import { IEditorInputFactoryRegistry, Extensions as EditorExtensions, TextCompareEditorVisibleContext, TEXT_DIFF_EDITOR_ID, EditorsVisibleContext, InEditorZenModeContext, ActiveEditorGroupEmptyContext, MultipleEditorGroupsContext, IUntitledResourceInput, IResourceDiffInput, SplitEditorsVertically, TextCompareEditorActiveContext, ActiveEditorContext, IEditor } from 'vs/workbench/common/editor';
+import { IEditorInputFactoryRegistry, Extensions as EditorExtensions, TextCompareEditorVisibleContext, TEXT_DIFF_EDITOR_ID, EditorsVisibleContext, InEditorZenModeContext, ActiveEditorGroupEmptyContext, MultipleEditorGroupsContext, IUntitledResourceInput, IResourceDiffInput, SplitEditorsVertically, TextCompareEditorActiveContext, ActiveEditorContext } from 'vs/workbench/common/editor';
 import { HistoryService } from 'vs/workbench/services/history/electron-browser/history';
 import { ActivitybarPart } from 'vs/workbench/browser/parts/activitybar/activitybarPart';
 import { SidebarPart } from 'vs/workbench/browser/parts/sidebar/sidebarPart';
@@ -174,6 +173,8 @@ import { INotebookService } from 'sql/workbench/services/notebook/common/noteboo
 import { ICommandLineProcessing } from 'sql/workbench/services/commandLine/common/commandLine';
 import { CommandLineService } from 'sql/workbench/services/commandLine/common/commandLineService';
 import { OEShimService, IOEShimService } from 'sql/parts/objectExplorer/common/objectExplorerViewTreeShim';
+import { LabelService } from 'vs/workbench/services/label/common/labelService';
+import { ILabelService } from 'vs/platform/label/common/label';
 // {{SQL CARBON EDIT}} - End
 import { IExtensionUrlHandler, ExtensionUrlHandler } from 'vs/workbench/services/extensions/electron-browser/inactiveExtensionUrlHandler';
 import { ContextViewService } from 'vs/platform/contextview/browser/contextViewService';
@@ -562,6 +563,7 @@ export class Workbench extends Disposable implements IPartService {
 
 		// {{SQL CARBON EDIT}}
 		// SQL Tools services
+		serviceCollection.set(ILabelService, this.instantiationService.createInstance(LabelService));
 		serviceCollection.set(IDashboardService, this.instantiationService.createInstance(DashboardService));
 		serviceCollection.set(IDashboardViewService, this.instantiationService.createInstance(DashboardViewService));
 		serviceCollection.set(IModelViewService, this.instantiationService.createInstance(ModelViewService));

@@ -1310,46 +1310,46 @@ export class SearchView extends Viewlet implements IViewlet, IPanel {
 
 				dom.hide(this.resultsElement);
 
-					const messageEl = this.clearMessage();
-					const p = dom.append(messageEl, $('p', undefined, message));
+				const messageEl = this.clearMessage();
+				const p = dom.append(messageEl, $('p', undefined, message));
 
-					if (!completed) {
-						const searchAgainLink = dom.append(p, $('a.pointer.prominent', undefined, nls.localize('rerunSearch.message', "Search again")));
-						this.messageDisposables.push(dom.addDisposableListener(searchAgainLink, dom.EventType.CLICK, (e: MouseEvent) => {
-							dom.EventHelper.stop(e, false);
-							this.onQueryChanged();
-						}));
-					} else if (hasIncludes || hasExcludes) {
-						const searchAgainLink = dom.append(p, $('a.pointer.prominent', { tabindex: 0 }, nls.localize('rerunSearchInAll.message', "Search again in all files")));
-						this.messageDisposables.push(dom.addDisposableListener(searchAgainLink, dom.EventType.CLICK, (e: MouseEvent) => {
-							dom.EventHelper.stop(e, false);
+				if (!completed) {
+					const searchAgainLink = dom.append(p, $('a.pointer.prominent', undefined, nls.localize('rerunSearch.message', "Search again")));
+					this.messageDisposables.push(dom.addDisposableListener(searchAgainLink, dom.EventType.CLICK, (e: MouseEvent) => {
+						dom.EventHelper.stop(e, false);
+						this.onQueryChanged();
+					}));
+				} else if (hasIncludes || hasExcludes) {
+					const searchAgainLink = dom.append(p, $('a.pointer.prominent', { tabindex: 0 }, nls.localize('rerunSearchInAll.message', "Search again in all files")));
+					this.messageDisposables.push(dom.addDisposableListener(searchAgainLink, dom.EventType.CLICK, (e: MouseEvent) => {
+						dom.EventHelper.stop(e, false);
 
-							this.inputPatternExcludes.setValue('');
-							this.inputPatternIncludes.setValue('');
+						this.inputPatternExcludes.setValue('');
+						this.inputPatternIncludes.setValue('');
 
-							this.onQueryChanged();
-						}));
-					} else {
-						const openSettingsLink = dom.append(p, $('a.pointer.prominent', { tabindex: 0 }, nls.localize('openSettings.message', "Open Settings")));
-						this.addClickEvents(openSettingsLink, this.onOpenSettings);
-					}
-
-					if (completed) {
-						dom.append(p, $('span', undefined, ' - '));
-
-						const learnMoreLink = dom.append(p, $('a.pointer.prominent', { tabindex: 0 }, nls.localize('openSettings.learnMore', "Learn More")));
-						this.addClickEvents(learnMoreLink, this.onLearnMore);
-					}
-
-					if (this.contextService.getWorkbenchState() === WorkbenchState.EMPTY) {
-						this.showSearchWithoutFolderMessage();
-					}
+						this.onQueryChanged();
+					}));
 				} else {
-					this.viewModel.searchResult.toggleHighlights(this.isVisible()); // show highlights
-
-					// Indicate final search result count for ARIA
-					aria.status(nls.localize('ariaSearchResultsStatus', "Search returned {0} results in {1} files", this.viewModel.searchResult.count(), this.viewModel.searchResult.fileCount()));
+					const openSettingsLink = dom.append(p, $('a.pointer.prominent', { tabindex: 0 }, nls.localize('openSettings.message', "Open Settings")));
+					this.addClickEvents(openSettingsLink, this.onOpenSettings);
 				}
+
+				if (completed) {
+					dom.append(p, $('span', undefined, ' - '));
+
+					const learnMoreLink = dom.append(p, $('a.pointer.prominent', { tabindex: 0 }, nls.localize('openSettings.learnMore', "Learn More")));
+					this.addClickEvents(learnMoreLink, this.onLearnMore);
+				}
+
+				if (this.contextService.getWorkbenchState() === WorkbenchState.EMPTY) {
+					this.showSearchWithoutFolderMessage();
+				}
+			} else {
+				this.viewModel.searchResult.toggleHighlights(this.isVisible()); // show highlights
+
+				// Indicate final search result count for ARIA
+				aria.status(nls.localize('ariaSearchResultsStatus', "Search returned {0} results in {1} files", this.viewModel.searchResult.count(), this.viewModel.searchResult.fileCount()));
+			}
 		};
 
 		const onError = (e: any) => {

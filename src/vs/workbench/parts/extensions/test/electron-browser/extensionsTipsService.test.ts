@@ -162,7 +162,7 @@ function aGalleryExtension(name: string, properties: any = {}, galleryExtensionP
 	return <IGalleryExtension>galleryExtension;
 }
 
-// {{SQ|L CARBON EDIT}} disable broken tests
+// {{SQL CARBON EDIT}} disable broken tests
 suite('ExtensionsTipsService Test', () => {
 	test('ExtensionTipsService: No Prompt for valid workspace recommendations when galleryService is absent', () => {
 	});

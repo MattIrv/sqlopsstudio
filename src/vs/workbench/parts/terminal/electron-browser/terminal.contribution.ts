@@ -519,5 +519,6 @@ const sendSequenceTerminalCommand = new SendSequenceTerminalCommand({
 sendSequenceTerminalCommand.register();
 
 setupTerminalCommands();
+setupTerminalMenu();
 
 registerColors();

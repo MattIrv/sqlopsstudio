@@ -448,7 +448,7 @@ export class DefaultDragAndDrop implements _.IDragAndDrop {
 	}
 
 	// {{SQL CARBON EDIT}}
-	public dropAbort(tree: _.ITree, data: _.IDragAndDropData): void { }
+	public dropAbort(tree: _.ITree, data: IDragAndDropData): void { }
 }
 
 export class DefaultFilter implements _.IFilter {
