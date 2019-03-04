@@ -59,11 +59,11 @@ export class RefreshAction extends Action {
 		}
 
 		if (treeNode) {
-			this._tree.collapse(this.element).then(() => {
-				this._objectExplorerService.refreshTreeNode(treeNode.getSession(), treeNode).then(() => {
+			return this._tree.collapse(this.element).then(() => {
+				return this._objectExplorerService.refreshTreeNode(treeNode.getSession(), treeNode).then(() => {
 
-					this._tree.refresh(this.element).then(() => {
-						this._tree.expand(this.element);
+					return this._tree.refresh(this.element).then(() => {
+						return this._tree.expand(this.element);
 					}, refreshError => {
 						return Promise.resolve(true);
 					});

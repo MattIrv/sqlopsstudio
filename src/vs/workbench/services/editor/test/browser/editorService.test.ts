@@ -28,7 +28,8 @@ import { EditorServiceImpl } from 'vs/workbench/browser/parts/editor/editor';
 import { CancellationToken } from 'vs/base/common/cancellation';
 import { timeout } from 'vs/base/common/async';
 
-// TODO mairvine - Disable test if needed. It was previously disabled
+// {{SQL CARBON EDIT}} - Disable editor tests
+/*
 export class TestEditorControl extends BaseEditor {
 
 	constructor(@ITelemetryService telemetryService: ITelemetryService) { super('MyTestEditorForEditorService', NullTelemetryService, new TestThemeService(), new TestStorageService()); }
@@ -65,9 +66,9 @@ export class TestEditorInput extends EditorInput implements IFileEditorInput {
 		this.gotDisposed = true;
 	}
 }
-
+*/
 suite('Editor service', () => {
-
+/*
 	function registerTestEditorInput(): void {
 		Registry.as<IEditorRegistry>(Extensions.Editors).registerEditor(new EditorDescriptor(TestEditorControl, 'MyTestEditorForEditorService', 'My Test Editor For Next Editor Service'), new SyncDescriptor(TestEditorInput));
 	}
@@ -598,8 +599,10 @@ suite('Editor service', () => {
 		let failingEditor = await service.openEditor(failingInput);
 		assert.ok(!failingEditor);
 	});
+	*/
 });
 
+/*
 function toResource(path: string) {
 	return URI.from({ scheme: 'custom', path });
 }
@@ -607,3 +610,4 @@ function toResource(path: string) {
 function toFileResource(self: any, path: string) {
 	return URI.file(paths.join('C:\\', Buffer.from(self.test.fullTitle()).toString('base64'), path));
 }
+*/
