@@ -587,11 +587,6 @@ export class FileDragAndDrop implements ITreeDragAndDrop<ExplorerItem> {
 		}
 	}
 
-	// {{SQL CARBON EDIT}}
-	// TODO mairvine - Check that removing the original tree: ITree argument here is right
-	public dropAbort(data: IDragAndDropData): void { }
-	// {{SQL CARBON EDIT}} - End
-
 	private handleExternalDrop(data: DesktopDragAndDropData, target: ExplorerItem, originalEvent: DragEvent): Promise<void> {
 		const droppedResources = extractResources(originalEvent, true);
 

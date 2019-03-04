@@ -233,6 +233,13 @@ function getRepositoryAsset(version: IRawGalleryExtensionVersion): IGalleryExten
 }
 
 function getDownloadAsset(version: IRawGalleryExtensionVersion): IGalleryExtensionAsset {
+	// {{SQL CARBON EDIT}} - Use the extension VSIX download URL if present
+	const asset = getVersionAsset(version, AssetType.VSIX);
+	if (asset) {
+		return asset;
+	}
+	// {{SQL CARBON EDIT}} - End
+
 	return {
 		uri: `${version.fallbackAssetUri}/${AssetType.VSIX}?redirect=true`,
 		fallbackUri: `${version.fallbackAssetUri}/${AssetType.VSIX}`
@@ -252,7 +259,6 @@ function getVersionAsset(version: IRawGalleryExtensionVersion, type: string): IG
 	const result = version.files.filter(f => f.assetType === type)[0];
 
 	// {{SQL CARBON EDIT}}
-	// TODO mairvine - Check on this logic
 	let uriFromSource: string = undefined;
 	if (result) {
 		uriFromSource = result.source;
@@ -269,10 +275,7 @@ function getVersionAsset(version: IRawGalleryExtensionVersion, type: string): IG
 			fallbackUri: `${version.fallbackAssetUri}/${type}`
 		};
 	} else {
-		return {
-			uri: uriFromSource,
-			fallbackUri: `${version.fallbackAssetUri}/${type}`
-		};
+		return result ? { uri: uriFromSource, fallbackUri: `${version.fallbackAssetUri}/${type}` } : null;
 	}
 	// return result ? { uri: `${version.assetUri}/${type}`, fallbackUri: `${version.fallbackAssetUri}/${type}` } : null;
 	// {{SQL CARBON EDIT}} - End

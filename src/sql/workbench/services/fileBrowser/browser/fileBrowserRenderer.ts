@@ -11,7 +11,7 @@ import { URI } from 'vs/base/common/uri';
 import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
 import { IFileTemplateData } from 'vs/workbench/parts/files/electron-browser/views/explorerViewer';
 import { toDisposable } from 'vs/base/common/lifecycle';
-import { ResourceLabel } from 'vs/workbench/browser/labels';
+import { ResourceLabels, DEFAULT_LABELS_CONTAINER } from 'vs/workbench/browser/labels';
 
 const EmptyDisposable = toDisposable(() => null);
 
@@ -22,10 +22,12 @@ const EmptyDisposable = toDisposable(() => null);
 export class FileBrowserRenderer implements IRenderer {
 	public static readonly FILE_HEIGHT = 22;
 	private static readonly FILE_TEMPLATE_ID = 'carbonFileBrowser';
+	private resourceLabels: ResourceLabels;
 
 	constructor(
 		@IInstantiationService private instantiationService: IInstantiationService
 	) {
+		this.resourceLabels = this.instantiationService.createInstance(ResourceLabels, DEFAULT_LABELS_CONTAINER);
 	}
 
 	/**
@@ -46,9 +48,7 @@ export class FileBrowserRenderer implements IRenderer {
 	 * Render template in a dom element based on template id
 	 */
 	public renderTemplate(tree: ITree, templateId: string, container: HTMLElement): IFileTemplateData {
-		// TODO mairvine - Check how VS Code does this stuff. They may use ResourceLabels on the class and then create individual labels from that
-		const resourceLabel = this.instantiationService.createInstance(ResourceLabel, container, {});
-		const label = resourceLabel.create(container);
+		const label = this.resourceLabels.create(container);
 		const elementDisposable = EmptyDisposable;
 		return { elementDisposable, label, container };
 	}

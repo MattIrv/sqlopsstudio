@@ -1720,8 +1720,10 @@ registerCommand(new EditorOrNativeTextInputCommand({
 		primary: KeyMod.CtrlCmd | KeyCode.KEY_A
 	},
 	menubarOpts: {
-		menuId: MenuId.MenubarSelectionMenu,
-		group: '1_basic',
+		// {{SQL CARBON EDIT}} - Put this in the edit menu since we disabled the selection menu
+		menuId: MenuId.MenubarEditMenu,
+		group: '4_find_global',
+		// {{SQL CARBON EDIT}} - End
 		title: nls.localize({ key: 'miSelectAll', comment: ['&& denotes a mnemonic'] }, "&&Select All"),
 		order: 1
 	}

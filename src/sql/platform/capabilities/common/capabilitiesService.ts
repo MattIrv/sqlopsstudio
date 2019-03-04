@@ -132,8 +132,7 @@ export class CapabilitiesService extends Disposable implements ICapabilitiesServ
 
 		this._register(extentionManagementService.onDidUninstallExtension(({ identifier }) => {
 			extensionService.getExtensions().then(i => {
-				// TODO mairvine - make sure this change is valid
-				let extension = i.find(c => c.identifier.value === identifier.id);
+				let extension = i.find(c => c.identifier.value.toLowerCase() === identifier.id.toLowerCase());
 				let id = extension.contributes['connectionProvider'].providerId;
 				delete this.capabilities.connectionProviderCache[id];
 			});

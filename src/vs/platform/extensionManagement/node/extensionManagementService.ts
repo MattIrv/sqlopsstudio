@@ -407,7 +407,9 @@ export class ExtensionManagementService extends Disposable implements IExtension
 							error => Promise.reject(new ExtensionManagementError(this.joinErrors(error).message, INSTALL_ERROR_VALIDATING))
 						);
 				},
-				error => Promise.reject(new ExtensionManagementError(this.joinErrors(error).message, INSTALL_ERROR_DOWNLOADING)));
+				error => {
+					return Promise.reject(new ExtensionManagementError(this.joinErrors(error).message, INSTALL_ERROR_DOWNLOADING))
+				});
 	}
 
 	private installExtension(installableExtension: InstallableExtension, type: ExtensionType, token: CancellationToken): Promise<ILocalExtension> {

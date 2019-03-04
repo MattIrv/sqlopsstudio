@@ -296,14 +296,16 @@ CommandsRegistry.registerCommand(SaveExtensionHostProfileAction.ID, (accessor: S
 
 // File menu registration
 
-MenuRegistry.appendMenuItem(MenuId.MenubarPreferencesMenu, {
-	group: '2_keybindings',
-	command: {
-		id: ShowRecommendedKeymapExtensionsAction.ID,
-		title: localize({ key: 'miOpenKeymapExtensions', comment: ['&& denotes a mnemonic'] }, "&&Keymaps")
-	},
-	order: 2
-});
+// {{SQL CARBON EDIT}} - Disable unused menu item
+// MenuRegistry.appendMenuItem(MenuId.MenubarPreferencesMenu, {
+// 	group: '2_keybindings',
+// 	command: {
+// 		id: ShowRecommendedKeymapExtensionsAction.ID,
+// 		title: localize({ key: 'miOpenKeymapExtensions', comment: ['&& denotes a mnemonic'] }, "&&Keymaps")
+// 	},
+// 	order: 2
+// });
+// {{SQL CARBON EDIT}} - End
 
 MenuRegistry.appendMenuItem(MenuId.MenubarPreferencesMenu, {
 	group: '1_settings',
@@ -322,7 +324,8 @@ MenuRegistry.appendMenuItem(MenuId.MenubarViewMenu, {
 		id: VIEWLET_ID,
 		title: localize({ key: 'miViewExtensions', comment: ['&& denotes a mnemonic'] }, "E&&xtensions")
 	},
-	order: 5
+	// {{SQL CARBON EDIT}} - Change the order
+	order: 7
 });
 
 // Running extensions

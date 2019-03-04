@@ -245,7 +245,8 @@ export class Menubar {
 		let macApplicationMenuItem: Electron.MenuItem;
 		if (isMacintosh) {
 			const applicationMenu = new Menu();
-			macApplicationMenuItem = new MenuItem({ label: product.nameShort, submenu: applicationMenu });
+			// {{SQL CARBON EDIT}} - Use long name
+			macApplicationMenuItem = new MenuItem({ label: product.nameLong, submenu: applicationMenu });
 			this.setMacApplicationMenu(applicationMenu);
 			menubar.append(macApplicationMenuItem);
 		}
@@ -274,12 +275,14 @@ export class Menubar {
 		this.setMenuById(editMenu, 'Edit');
 		menubar.append(editMenuItem);
 
-		// Selection
-		const selectionMenu = new Menu();
-		const selectionMenuItem = new MenuItem({ label: this.mnemonicLabel(nls.localize({ key: 'mSelection', comment: ['&& denotes a mnemonic'] }, "&&Selection")), submenu: selectionMenu });
+		// {{SQL CARBON EDIT}} - Disable unused menus
+		// // Selection
+		// const selectionMenu = new Menu();
+		// const selectionMenuItem = new MenuItem({ label: this.mnemonicLabel(nls.localize({ key: 'mSelection', comment: ['&& denotes a mnemonic'] }, "&&Selection")), submenu: selectionMenu });
 
-		this.setMenuById(selectionMenu, 'Selection');
-		menubar.append(selectionMenuItem);
+		// this.setMenuById(selectionMenu, 'Selection');
+		// menubar.append(selectionMenuItem);
+		// {{SQL CARBON EDIT}} - End
 
 		// View
 		const viewMenu = new Menu();
@@ -288,26 +291,32 @@ export class Menubar {
 		this.setMenuById(viewMenu, 'View');
 		menubar.append(viewMenuItem);
 
-		// Go
-		const gotoMenu = new Menu();
-		const gotoMenuItem = new MenuItem({ label: this.mnemonicLabel(nls.localize({ key: 'mGoto', comment: ['&& denotes a mnemonic'] }, "&&Go")), submenu: gotoMenu });
+		// {{SQL CARBON EDIT}} - Disable unused menus
+		// // Go
+		// const gotoMenu = new Menu();
+		// const gotoMenuItem = new MenuItem({ label: this.mnemonicLabel(nls.localize({ key: 'mGoto', comment: ['&& denotes a mnemonic'] }, "&&Go")), submenu: gotoMenu });
 
-		this.setMenuById(gotoMenu, 'Go');
-		menubar.append(gotoMenuItem);
+		// this.setMenuById(gotoMenu, 'Go');
+		// menubar.append(gotoMenuItem);
+		// {{SQL CARBON EDIT}} - End
 
-		// Debug
-		const debugMenu = new Menu();
-		const debugMenuItem = new MenuItem({ label: this.mnemonicLabel(nls.localize({ key: 'mDebug', comment: ['&& denotes a mnemonic'] }, "&&Debug")), submenu: debugMenu });
+		// {{SQL CARBON EDIT}} - Disable unused menus
+		// // Debug
+		// const debugMenu = new Menu();
+		// const debugMenuItem = new MenuItem({ label: this.mnemonicLabel(nls.localize({ key: 'mDebug', comment: ['&& denotes a mnemonic'] }, "&&Debug")), submenu: debugMenu });
 
-		this.setMenuById(debugMenu, 'Debug');
-		menubar.append(debugMenuItem);
+		// this.setMenuById(debugMenu, 'Debug');
+		// menubar.append(debugMenuItem);
+		// {{SQL CARBON EDIT}} - End
 
-		// Terminal
-		const terminalMenu = new Menu();
-		const terminalMenuItem = new MenuItem({ label: this.mnemonicLabel(nls.localize({ key: 'mTerminal', comment: ['&& denotes a mnemonic'] }, "&&Terminal")), submenu: terminalMenu });
+		// {{SQL CARBON EDIT}} - Disable unused menus
+		// // Terminal
+		// const terminalMenu = new Menu();
+		// const terminalMenuItem = new MenuItem({ label: this.mnemonicLabel(nls.localize({ key: 'mTerminal', comment: ['&& denotes a mnemonic'] }, "&&Terminal")), submenu: terminalMenu });
 
-		this.setMenuById(terminalMenu, 'Terminal');
-		menubar.append(terminalMenuItem);
+		// this.setMenuById(terminalMenu, 'Terminal');
+		// menubar.append(terminalMenuItem);
+		// {{SQL CARBON EDIT}} - End
 
 		// Mac: Window
 		let macWindowMenuItem: Electron.MenuItem | undefined;

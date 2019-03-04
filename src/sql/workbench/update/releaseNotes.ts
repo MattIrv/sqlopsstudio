@@ -13,6 +13,7 @@ import { IInstantiationService } from 'vs/platform/instantiation/common/instanti
 import { URI } from 'vs/base/common/uri';
 import { IOpenerService } from 'vs/platform/opener/common/opener';
 import { AbstractShowReleaseNotesAction } from 'vs/workbench/parts/update/electron-browser/update';
+import { MenuRegistry, MenuId } from 'vs/platform/actions/common/actions';
 
 export class OpenGettingStartedInBrowserAction extends Action {
 
@@ -41,3 +42,12 @@ export class ShowCurrentReleaseNotesAction extends AbstractShowReleaseNotesActio
 		super(id, label, pkg.version, instantiationService);
 	}
 }
+
+MenuRegistry.appendMenuItem(MenuId.MenubarHelpMenu, {
+	group: '1_welcome',
+	command: {
+		id: ShowCurrentReleaseNotesAction.ID,
+		title: nls.localize({ key: 'miGettingStarted', comment: ['&& denotes a mnemonic'] }, "Getting &&Started")
+	},
+	order: 1
+});

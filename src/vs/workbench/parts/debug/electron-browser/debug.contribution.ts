@@ -228,23 +228,27 @@ statusBar.registerStatusbarItem(new StatusbarItemDescriptor(DebugStatus, Statusb
 
 // View menu
 
-MenuRegistry.appendMenuItem(MenuId.MenubarViewMenu, {
-	group: '3_views',
-	command: {
-		id: VIEWLET_ID,
-		title: nls.localize({ key: 'miViewDebug', comment: ['&& denotes a mnemonic'] }, "&&Debug")
-	},
-	order: 4
-});
+// {{SQL CARBON EDIT}} - Disable unused menu item
+// MenuRegistry.appendMenuItem(MenuId.MenubarViewMenu, {
+// 	group: '3_views',
+// 	command: {
+// 		id: VIEWLET_ID,
+// 		title: nls.localize({ key: 'miViewDebug', comment: ['&& denotes a mnemonic'] }, "&&Debug")
+// 	},
+// 	order: 4
+// });
+// {{SQL CARBON EDIT}} - End
 
-MenuRegistry.appendMenuItem(MenuId.MenubarViewMenu, {
-	group: '4_panels',
-	command: {
-		id: OpenDebugPanelAction.ID,
-		title: nls.localize({ key: 'miToggleDebugConsole', comment: ['&& denotes a mnemonic'] }, "De&&bug Console")
-	},
-	order: 2
-});
+// {{SQL CARBON EDIT}} - Disable unused menu item
+// MenuRegistry.appendMenuItem(MenuId.MenubarViewMenu, {
+// 	group: '4_panels',
+// 	command: {
+// 		id: OpenDebugPanelAction.ID,
+// 		title: nls.localize({ key: 'miToggleDebugConsole', comment: ['&& denotes a mnemonic'] }, "De&&bug Console")
+// 	},
+// 	order: 2
+// });
+// {{SQL CARBON EDIT}} - End
 
 // Debug menu
 

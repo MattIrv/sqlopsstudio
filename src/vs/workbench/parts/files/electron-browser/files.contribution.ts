@@ -419,5 +419,6 @@ MenuRegistry.appendMenuItem(MenuId.MenubarViewMenu, {
 		id: VIEWLET_ID,
 		title: nls.localize({ key: 'miViewExplorer', comment: ['&& denotes a mnemonic'] }, "&&Explorer")
 	},
-	order: 1
+	// {{SQL CARBON EDIT}} - Change the order
+	order: 3
 });

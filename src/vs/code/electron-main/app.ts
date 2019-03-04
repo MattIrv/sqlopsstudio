@@ -74,10 +74,6 @@ import { SnapUpdateService } from 'vs/platform/update/electron-main/updateServic
 import { IStorageMainService, StorageMainService } from 'vs/platform/storage/node/storageMainService';
 import { GlobalStorageDatabaseChannel } from 'vs/platform/storage/node/storageIpc';
 import { generateUuid } from 'vs/base/common/uuid';
-// {{SQL CARBON EDIT}}
-import { CodeMenu } from 'sql/workbench/electron-browser/menus';
-import * as platform from 'vs/base/common/platform';
-// {{SQL CARBON EDIT}} - End
 import { startsWith } from 'vs/base/common/strings';
 import { BackupMainService } from 'vs/platform/backup/electron-main/backupMainService';
 import { IBackupMainService } from 'vs/platform/backup/common/backup';
@@ -657,15 +653,6 @@ export class CodeApplication extends Disposable {
 				}
 			}
 		}
-
-		// {{SQL CARBON EDIT}} - Use static menu for now
-		// Install Menu
-		const instantiationService = accessor.get(IInstantiationService);
-		const configurationService = accessor.get(IConfigurationService);
-		if (platform.isMacintosh || configurationService.getValue<string>('window.titleBarStyle') !== 'custom') {
-			instantiationService.createInstance(CodeMenu);
-		}
-		// {{SQL CARBON EDIT}} - End
 
 		// Remote Authorities
 		this.handleRemoteAuthorities();

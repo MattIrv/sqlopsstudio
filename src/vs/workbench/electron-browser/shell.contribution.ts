@@ -25,6 +25,9 @@ import { ADD_ROOT_FOLDER_COMMAND_ID } from 'vs/workbench/browser/actions/workspa
 import { IsMacContext } from 'vs/platform/workbench/common/contextkeys';
 import { NoEditorsVisibleContext, SingleEditorGroupsContext } from 'vs/workbench/common/editor';
 import { IWindowService, IWindowsService } from 'vs/platform/windows/common/windows';
+// {{SQL CARBON EDIT}}
+import { InstallVSIXAction } from 'vs/workbench/parts/extensions/electron-browser/extensionsActions';
+// {{SQL CARBON EDIT}} - End
 
 // Contribute Commands
 KeybindingsRegistry.registerCommandAndKeybindingRule({
@@ -223,6 +226,15 @@ MenuRegistry.appendMenuItem(MenuId.MenubarFileMenu, {
 	order: 4
 });
 
+// {{SQL CARBON EDIT}} - Add install VSIX menu item
+MenuRegistry.appendMenuItem(MenuId.MenubarFileMenu, {
+	group: '5.1_installExtension',
+	command: {
+		id: InstallVSIXAction.ID,
+		title: nls.localize({ key: 'miinstallVsix', comment: ['&& denotes a mnemonic'] }, "Install Extension from VSIX Package")
+	}
+});
+// {{SQL CARBON EDIT}} - End
 
 // More
 MenuRegistry.appendMenuItem(MenuId.MenubarRecentMenu, {
@@ -357,61 +369,67 @@ MenuRegistry.appendMenuItem(MenuId.MenubarHelpMenu, {
 	order: 3
 });
 
-MenuRegistry.appendMenuItem(MenuId.MenubarHelpMenu, {
-	group: '1_welcome',
-	command: {
-		id: 'update.showCurrentReleaseNotes',
-		title: nls.localize({ key: 'miReleaseNotes', comment: ['&& denotes a mnemonic'] }, "&&Release Notes")
-	},
-	order: 4
-});
+// {{SQL CARBON EDIT}} - Disable unused menu item
+// MenuRegistry.appendMenuItem(MenuId.MenubarHelpMenu, {
+// 	group: '1_welcome',
+// 	command: {
+// 		id: 'update.showCurrentReleaseNotes',
+// 		title: nls.localize({ key: 'miReleaseNotes', comment: ['&& denotes a mnemonic'] }, "&&Release Notes")
+// 	},
+// 	order: 4
+// });
+// {{SQL CARBON EDIT}} - End
 
 // Reference
-MenuRegistry.appendMenuItem(MenuId.MenubarHelpMenu, {
-	group: '2_reference',
-	command: {
-		id: 'workbench.action.keybindingsReference',
-		title: nls.localize({ key: 'miKeyboardShortcuts', comment: ['&& denotes a mnemonic'] }, "&&Keyboard Shortcuts Reference")
-	},
-	order: 1
-});
+// {{SQL CARBON EDIT}} - Disable unused menu items
+// MenuRegistry.appendMenuItem(MenuId.MenubarHelpMenu, {
+// 	group: '2_reference',
+// 	command: {
+// 		id: 'workbench.action.keybindingsReference',
+// 		title: nls.localize({ key: 'miKeyboardShortcuts', comment: ['&& denotes a mnemonic'] }, "&&Keyboard Shortcuts Reference")
+// 	},
+// 	order: 1
+// });
 
-MenuRegistry.appendMenuItem(MenuId.MenubarHelpMenu, {
-	group: '2_reference',
-	command: {
-		id: 'workbench.action.openIntroductoryVideosUrl',
-		title: nls.localize({ key: 'miIntroductoryVideos', comment: ['&& denotes a mnemonic'] }, "Introductory &&Videos")
-	},
-	order: 2
-});
+// MenuRegistry.appendMenuItem(MenuId.MenubarHelpMenu, {
+// 	group: '2_reference',
+// 	command: {
+// 		id: 'workbench.action.openIntroductoryVideosUrl',
+// 		title: nls.localize({ key: 'miIntroductoryVideos', comment: ['&& denotes a mnemonic'] }, "Introductory &&Videos")
+// 	},
+// 	order: 2
+// });
 
-MenuRegistry.appendMenuItem(MenuId.MenubarHelpMenu, {
-	group: '2_reference',
-	command: {
-		id: 'workbench.action.openTipsAndTricksUrl',
-		title: nls.localize({ key: 'miTipsAndTricks', comment: ['&& denotes a mnemonic'] }, "Tips and Tri&&cks")
-	},
-	order: 3
-});
+// MenuRegistry.appendMenuItem(MenuId.MenubarHelpMenu, {
+// 	group: '2_reference',
+// 	command: {
+// 		id: 'workbench.action.openTipsAndTricksUrl',
+// 		title: nls.localize({ key: 'miTipsAndTricks', comment: ['&& denotes a mnemonic'] }, "Tips and Tri&&cks")
+// 	},
+// 	order: 3
+// });
+// {{SQL CARBON EDIT}} - End
 
 // Feedback
-MenuRegistry.appendMenuItem(MenuId.MenubarHelpMenu, {
-	group: '3_feedback',
-	command: {
-		id: 'workbench.action.openTwitterUrl',
-		title: nls.localize({ key: 'miTwitter', comment: ['&& denotes a mnemonic'] }, "&&Join Us on Twitter")
-	},
-	order: 1
-});
+// {{SQL CARBON EDIT}} - Disable unused menu items
+// MenuRegistry.appendMenuItem(MenuId.MenubarHelpMenu, {
+// 	group: '3_feedback',
+// 	command: {
+// 		id: 'workbench.action.openTwitterUrl',
+// 		title: nls.localize({ key: 'miTwitter', comment: ['&& denotes a mnemonic'] }, "&&Join Us on Twitter")
+// 	},
+// 	order: 1
+// });
 
-MenuRegistry.appendMenuItem(MenuId.MenubarHelpMenu, {
-	group: '3_feedback',
-	command: {
-		id: 'workbench.action.openRequestFeatureUrl',
-		title: nls.localize({ key: 'miUserVoice', comment: ['&& denotes a mnemonic'] }, "&&Search Feature Requests")
-	},
-	order: 2
-});
+// MenuRegistry.appendMenuItem(MenuId.MenubarHelpMenu, {
+// 	group: '3_feedback',
+// 	command: {
+// 		id: 'workbench.action.openRequestFeatureUrl',
+// 		title: nls.localize({ key: 'miUserVoice', comment: ['&& denotes a mnemonic'] }, "&&Search Feature Requests")
+// 	},
+// 	order: 2
+// });
+// {{SQL CARBON EDIT}} - End
 
 MenuRegistry.appendMenuItem(MenuId.MenubarHelpMenu, {
 	group: '3_feedback',

@@ -541,16 +541,18 @@ MenuRegistry.appendMenuItem(MenuId.ExplorerContext, {
 });
 
 // Empty Editor Group Context Menu
-MenuRegistry.appendMenuItem(MenuId.EmptyEditorGroupContext, { command: { id: GlobalNewUntitledFileAction.ID, title: nls.localize('newFile', "New File") }, group: '1_file', order: 10 });
+// {{SQL CARBON EDIT}} - Use "New Query" instead of "New File"
+MenuRegistry.appendMenuItem(MenuId.EmptyEditorGroupContext, { command: { id: GlobalNewUntitledFileAction.ID, title: nls.localize('newFile', "New Query") }, group: '1_file', order: 10 });
 MenuRegistry.appendMenuItem(MenuId.EmptyEditorGroupContext, { command: { id: 'workbench.action.quickOpen', title: nls.localize('openFile', "Open File...") }, group: '1_file', order: 20 });
 
 // File menu
 
+// {{SQL CARBON EDIT}} - Use "New Query" instead of "New File"
 MenuRegistry.appendMenuItem(MenuId.MenubarFileMenu, {
 	group: '1_new',
 	command: {
 		id: GlobalNewUntitledFileAction.ID,
-		title: nls.localize({ key: 'miNewFile', comment: ['&& denotes a mnemonic'] }, "&&New File")
+		title: nls.localize({ key: 'miNewFile', comment: ['&& denotes a mnemonic'] }, "&&New Query")
 	},
 	order: 1
 });

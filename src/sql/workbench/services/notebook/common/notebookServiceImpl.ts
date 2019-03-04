@@ -458,8 +458,7 @@ export class NotebookService extends Disposable implements INotebookService {
 
 	private removeContributedProvidersFromCache(identifier: IExtensionIdentifier, extensionService: IExtensionService) {
 		extensionService.getExtensions().then(i => {
-			// TODO mairvine: Make sure that checking c.identifier.value against identifier.id is correct
-			let extension = i.find(c => c.identifier.value === identifier.id);
+			let extension = i.find(c => c.identifier.value.toLowerCase() === identifier.id.toLowerCase());
 			if (extension && extension.contributes['notebookProvider']) {
 				let id = extension.contributes['notebookProvider'].providerId;
 				delete this.providersMemento.notebookProviderCache[id];

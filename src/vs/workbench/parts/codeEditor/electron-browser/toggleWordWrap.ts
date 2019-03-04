@@ -306,11 +306,13 @@ MenuRegistry.appendMenuItem(MenuId.EditorTitle, {
 
 
 // View menu
-MenuRegistry.appendMenuItem(MenuId.MenubarViewMenu, {
-	group: '5_editor',
-	command: {
-		id: TOGGLE_WORD_WRAP_ID,
-		title: nls.localize({ key: 'miToggleWordWrap', comment: ['&& denotes a mnemonic'] }, "Toggle &&Word Wrap")
-	},
-	order: 1
-});
+// {{SQL CARBON EDIT}} - Disable unused menu item
+// MenuRegistry.appendMenuItem(MenuId.MenubarViewMenu, {
+// 	group: '5_editor',
+// 	command: {
+// 		id: TOGGLE_WORD_WRAP_ID,
+// 		title: nls.localize({ key: 'miToggleWordWrap', comment: ['&& denotes a mnemonic'] }, "Toggle &&Word Wrap")
+// 	},
+// 	order: 1
+// });
+// {{SQL CARBON EDIT}} - End

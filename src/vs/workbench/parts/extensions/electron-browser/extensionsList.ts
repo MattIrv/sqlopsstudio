@@ -113,7 +113,6 @@ export class Renderer implements IPagedRenderer<IExtension, ITemplateData> {
 			root, element, icon, name, /*installCount, ratings,*/ author, description, disposables, actionbar,
 			extensionDisposables: [],
 			set extension(extension: IExtension) {
-				// TODO mairvine: The code here before set .extension by action. Do I need to make edits?
 				extensionContainers.extension = extension;
 			}
 		};
