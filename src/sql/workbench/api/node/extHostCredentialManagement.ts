@@ -7,13 +7,13 @@
 import { IMainContext } from 'vs/workbench/api/node/extHost.protocol';
 import { SqlMainContext, MainThreadCredentialManagementShape, ExtHostCredentialManagementShape } from 'sql/workbench/api/node/sqlExtHost.protocol';
 import * as vscode from 'vscode';
-import * as sqlops from 'sqlops';
+import * as azdata from 'azdata';
 import { Disposable } from 'vs/workbench/api/node/extHostTypes';
 
 class CredentialAdapter {
-	public provider: sqlops.CredentialProvider;
+	public provider: azdata.CredentialProvider;
 
-	constructor(provider: sqlops.CredentialProvider) {
+	constructor(provider: azdata.CredentialProvider) {
 		this.provider = provider;
 	}
 
@@ -21,7 +21,7 @@ class CredentialAdapter {
 		return this.provider.saveCredential(credentialId, password);
 	}
 
-	public readCredential(credentialId: string): Thenable<sqlops.Credential> {
+	public readCredential(credentialId: string): Thenable<azdata.Credential> {
 		return this.provider.readCredential(credentialId);
 	}
 
@@ -53,7 +53,7 @@ export class ExtHostCredentialManagement extends ExtHostCredentialManagementShap
 	}
 
 	// PUBLIC METHODS //////////////////////////////////////////////////////
-	public $registerCredentialProvider(provider: sqlops.CredentialProvider): vscode.Disposable {
+	public $registerCredentialProvider(provider: azdata.CredentialProvider): vscode.Disposable {
 		// Store the credential provider
 		provider.handle = this._nextHandle();
 		this._adapter[provider.handle] = new CredentialAdapter(provider);
@@ -66,7 +66,7 @@ export class ExtHostCredentialManagement extends ExtHostCredentialManagementShap
 		return this._createDisposable(provider.handle);
 	}
 
-	public $getCredentialProvider(namespaceId: string): Thenable<sqlops.CredentialProvider> {
+	public $getCredentialProvider(namespaceId: string): Thenable<azdata.CredentialProvider> {
 		let self = this;
 
 		if (!namespaceId) {
@@ -83,7 +83,7 @@ export class ExtHostCredentialManagement extends ExtHostCredentialManagementShap
 		return this._withAdapter(0, CredentialAdapter, adapter => adapter.saveCredential(credentialId, password));
 	}
 
-	public $readCredential(credentialId: string): Thenable<sqlops.Credential> {
+	public $readCredential(credentialId: string): Thenable<azdata.Credential> {
 		return this._withAdapter(0, CredentialAdapter, adapter => adapter.readCredential(credentialId));
 	}
 
@@ -104,9 +104,9 @@ export class ExtHostCredentialManagement extends ExtHostCredentialManagementShap
 		return `${namespaceId}|${credentialId}`;
 	}
 
-	private _createNamespacedCredentialProvider(namespaceId: string, adapter: CredentialAdapter): Thenable<sqlops.CredentialProvider> {
+	private _createNamespacedCredentialProvider(namespaceId: string, adapter: CredentialAdapter): Thenable<azdata.CredentialProvider> {
 		// Create a provider that wraps the methods in a namespace
-		let provider: sqlops.CredentialProvider = {
+		let provider: azdata.CredentialProvider = {
 			handle: adapter.provider.handle,
 			deleteCredential: (credentialId: string) => {
 				let namespacedId = ExtHostCredentialManagement._getNamespacedCredentialId(namespaceId, credentialId);

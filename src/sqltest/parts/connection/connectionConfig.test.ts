@@ -17,7 +17,7 @@ import * as Constants from 'sql/platform/connection/common/constants';
 import { IConnectionProfileGroup, ConnectionProfileGroup } from 'sql/platform/connection/common/connectionProfileGroup';
 import * as assert from 'assert';
 import { ProviderFeatures, ICapabilitiesService } from 'sql/platform/capabilities/common/capabilitiesService';
-import * as sqlops from 'sqlops';
+import * as azdata from 'azdata';
 import { Emitter } from 'vs/base/common/event';
 import { ConnectionOptionSpecialType, ServiceOptionType } from 'sql/workbench/api/common/sqlExtHostTypes';
 import { CapabilitiesTestService } from 'sqltest/stubs/capabilitiesTestService';
@@ -187,7 +187,7 @@ suite('SQL ConnectionConfig tests', () => {
 	setup(() => {
 		capabilitiesService = TypeMoq.Mock.ofType(CapabilitiesTestService);
 		capabilities = [];
-		let connectionProvider: sqlops.ConnectionProviderOptions = {
+		let connectionProvider: azdata.ConnectionProviderOptions = {
 			options: [
 				{
 					name: 'serverName',
@@ -303,7 +303,7 @@ suite('SQL ConnectionConfig tests', () => {
 	}
 
 	test('allGroups should return groups from user and workspace settings', () => {
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionGroupsArrayName))
 			.returns(() => configValueToConcat);
 
@@ -353,7 +353,7 @@ suite('SQL ConnectionConfig tests', () => {
 				description: 'g1-2'
 			}];
 
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionGroupsArrayName))
 			.returns(() => configValueToMerge);
 
@@ -386,10 +386,10 @@ suite('SQL ConnectionConfig tests', () => {
 
 		let expectedNumberOfConnections = connections.user.length + 1;
 
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionsArrayName))
 			.returns(() => connections);
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionGroupsArrayName))
 			.returns(() => configValueToConcat);
 
@@ -428,10 +428,10 @@ suite('SQL ConnectionConfig tests', () => {
 
 		let expectedNumberOfConnections = connections.user.length;
 
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionsArrayName))
 			.returns(() => connections);
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionGroupsArrayName))
 			.returns(() => configValueToConcat);
 
@@ -471,11 +471,11 @@ suite('SQL ConnectionConfig tests', () => {
 		let expectedNumberOfConnections = connections.user.length + 1;
 		let expectedNumberOfGroups = configValueToConcat.user.length + 1;
 
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionsArrayName))
 			.returns(() => connections);
 
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionGroupsArrayName))
 			.returns(() => configValueToConcat);
 
@@ -495,7 +495,7 @@ suite('SQL ConnectionConfig tests', () => {
 	test('getConnections should return connections from user and workspace settings given getWorkspaceConnections set to true', () => {
 		let getWorkspaceConnections: boolean = true;
 
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionsArrayName))
 			.returns(() => connections);
 
@@ -507,7 +507,7 @@ suite('SQL ConnectionConfig tests', () => {
 	test('getConnections should return connections from user settings given getWorkspaceConnections set to false', () => {
 		let getWorkspaceConnections: boolean = false;
 
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionsArrayName))
 			.returns(() => connections);
 
@@ -531,7 +531,7 @@ suite('SQL ConnectionConfig tests', () => {
 			value: connections.value,
 			workspaceFolder: []
 		};
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionsArrayName))
 			.returns(() => connectionsWithNoId);
 
@@ -583,7 +583,7 @@ suite('SQL ConnectionConfig tests', () => {
 		let capabilitiesService2: TypeMoq.Mock<ICapabilitiesService> = TypeMoq.Mock.ofType(CapabilitiesTestService);
 		capabilitiesService2.setup(x => x.getCapabilities('MSSQL')).returns(() => msSQLCapabilities2);
 		(capabilitiesService2.object as any).onCapabilitiesRegistered = onCapabilitiesRegistered.event;
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionsArrayName))
 			.returns(() => configValue);
 
@@ -663,7 +663,7 @@ suite('SQL ConnectionConfig tests', () => {
 		};
 
 		let expectedNumberOfConnections = connections.user.length - 1;
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionsArrayName))
 			.returns(() => connections);
 
@@ -708,11 +708,11 @@ suite('SQL ConnectionConfig tests', () => {
 
 		let expectedNumberOfConnections = connections.user.length - 1;
 		let expectedNumberOfGroups = configValueToConcat.user.length - 2;
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionsArrayName))
 			.returns(() => connections);
 
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionGroupsArrayName))
 			.returns(() => configValueToConcat);
 
@@ -749,7 +749,7 @@ suite('SQL ConnectionConfig tests', () => {
 		};
 
 		let expectedNumberOfConnections = connections.user.length;
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionsArrayName))
 			.returns(() => connections);
 
@@ -774,7 +774,7 @@ suite('SQL ConnectionConfig tests', () => {
 		configEditingServiceMock.setup(x => x.writeConfiguration(ConfigurationTarget.USER, TypeMoq.It.isAny())).callback((x: any, val: any) => {
 			calledValue = val.value as IConnectionProfileStore[];
 		}).returns(() => Promise.resolve(undefined));
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionGroupsArrayName))
 			.returns(() => configValueToConcat);
 
@@ -802,7 +802,7 @@ suite('SQL ConnectionConfig tests', () => {
 		configEditingServiceMock.setup(x => x.writeConfiguration(ConfigurationTarget.USER, TypeMoq.It.isAny())).callback((x: any, val: any) => {
 			calledValue = val.value as IConnectionProfileStore[];
 		}).returns(() => Promise.resolve(undefined));
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionGroupsArrayName))
 			.returns(() => configValueToConcat);
 
@@ -841,7 +841,7 @@ suite('SQL ConnectionConfig tests', () => {
 		};
 
 		let expectedNumberOfConnections = connections.user.length;
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionsArrayName))
 			.returns(() => connections);
 
@@ -925,10 +925,10 @@ suite('SQL ConnectionConfig tests', () => {
 
 	test('addConnection should not move the connection when editing', async () => {
 		// Set up the connection config
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionsArrayName))
 			.returns(() => connections);
-		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | sqlops.DataProtocolServerCapabilities[]>(
+		workspaceConfigurationServiceMock.setup(x => x.inspect<IConnectionProfileStore[] | IConnectionProfileGroup[] | azdata.DataProtocolServerCapabilities[]>(
 			Constants.connectionGroupsArrayName))
 			.returns(() => configValueToConcat);
 		let config = new ConnectionConfig(configEditingServiceMock.object, workspaceConfigurationServiceMock.object, capabilitiesService.object);

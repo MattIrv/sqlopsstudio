@@ -9,7 +9,7 @@ import { ILogService } from 'vs/platform/log/common/log';
 import { IMainContext } from 'vs/workbench/api/node/extHost.protocol';
 import * as extHostTypes from 'vs/workbench/api/node/extHostTypes';
 
-import * as sqlops from 'sqlops';
+import * as azdata from 'azdata';
 
 import { ITaskHandlerDescription } from 'sql/platform/tasks/common/tasks';
 import { SqlMainContext, MainThreadTasksShape, ExtHostTasksShape } from 'sql/workbench/api/node/sqlExtHost.protocol';
@@ -31,7 +31,7 @@ export class ExtHostTasks implements ExtHostTasksShape {
 		this._proxy = mainContext.getProxy(SqlMainContext.MainThreadTasks);
 	}
 
-	registerTask(id: string, callback: sqlops.tasks.ITaskHandler, thisArg?: any, description?: ITaskHandlerDescription): extHostTypes.Disposable {
+	registerTask(id: string, callback: azdata.tasks.ITaskHandler, thisArg?: any, description?: ITaskHandlerDescription): extHostTypes.Disposable {
 		this.logService.trace('ExtHostTasks#registerTask', id);
 
 		if (!id.trim().length) {

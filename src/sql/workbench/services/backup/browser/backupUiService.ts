@@ -8,7 +8,7 @@
 import { Event, Emitter } from 'vs/base/common/event';
 import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
 
-import * as sqlops from 'sqlops';
+import * as azdata from 'azdata';
 
 import { ICapabilitiesService } from 'sql/platform/capabilities/common/capabilitiesService';
 import { IConnectionProfile } from 'sql/platform/connection/common/interfaces';
@@ -51,7 +51,7 @@ export class BackupUiService implements IBackupUiService {
 		});
 	}
 
-	private getOptions(provider: string): sqlops.ServiceOption[] {
+	private getOptions(provider: string): azdata.ServiceOption[] {
 		let feature = this._capabilitiesService.getLegacyCapabilities(this._currentProvider).features.find(f => f.featureName === 'backup');
 		if (feature) {
 			return feature.optionsMetadata;

@@ -5,14 +5,14 @@
 
 'use strict';
 
-import * as sqlops from 'sqlops';
+import * as azdata from 'azdata';
 import { CredentialManagementEvents, ICredentialsService } from 'sql/platform/credentials/common/credentialsService';
 import { IDisposable } from 'vs/base/common/lifecycle';
 
-export class CredentialsTestProvider implements sqlops.CredentialProvider {
+export class CredentialsTestProvider implements azdata.CredentialProvider {
 	handle: number;
 
-	public storedCredentials: { [K: string]: sqlops.Credential } = {};
+	public storedCredentials: { [K: string]: azdata.Credential } = {};
 
 	saveCredential(credentialId: string, password: string): Thenable<boolean> {
 		this.storedCredentials[credentialId] = {
@@ -22,7 +22,7 @@ export class CredentialsTestProvider implements sqlops.CredentialProvider {
 		return Promise.resolve(true);
 	}
 
-	readCredential(credentialId: string): Thenable<sqlops.Credential> {
+	readCredential(credentialId: string): Thenable<azdata.Credential> {
 		return Promise.resolve(this.storedCredentials[credentialId]);
 	}
 
@@ -40,7 +40,7 @@ export class CredentialsTestService implements ICredentialsService {
 		return undefined;
 	}
 
-	readCredential(credentialId: string): Thenable<sqlops.Credential> {
+	readCredential(credentialId: string): Thenable<azdata.Credential> {
 		return undefined;
 	}
 

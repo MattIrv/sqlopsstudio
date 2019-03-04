@@ -3,7 +3,7 @@
  *  Licensed under the Source EULA. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as sqlops from 'sqlops';
+import * as azdata from 'azdata';
 
 import { IEditorModel } from 'vs/platform/editor/common/editor';
 import { EditorInput, EditorModel, ConfirmResult } from 'vs/workbench/common/editor';
@@ -54,7 +54,7 @@ export class ModelViewInput extends EditorInput {
 	private _dialogPane: DialogPane;
 
 	constructor(private _title: string, private _model: ModelViewInputModel,
-		private _options: sqlops.ModelViewEditorOptions,
+		private _options: azdata.ModelViewEditorOptions,
 		@IInstantiationService private _instantiationService: IInstantiationService,
 		@IPartService private readonly _partService: IPartService
 	) {
@@ -115,7 +115,7 @@ export class ModelViewInput extends EditorInput {
 		return this._dialogPane;
 	}
 
-	public get options(): sqlops.ModelViewEditorOptions {
+	public get options(): azdata.ModelViewEditorOptions {
 		return this._options;
 	}
 

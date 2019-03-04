@@ -25,7 +25,7 @@ import { ITableStyles, ITableMouseEvent } from 'sql/base/browser/ui/table/interf
 import { warn } from 'sql/base/common/log';
 import { $ } from 'sql/base/browser/builder';
 
-import * as sqlops from 'sqlops';
+import * as azdata from 'azdata';
 
 import { IKeybindingService } from 'vs/platform/keybinding/common/keybinding';
 import { IContextMenuService } from 'vs/platform/contextview/browser/contextView';
@@ -186,7 +186,7 @@ export class GridPanel extends ViewletPanel {
 			}
 			this.reset();
 		}));
-		this.addResultSet(this.runner.batchSets.reduce<sqlops.ResultSetSummary[]>((p, e) => {
+		this.addResultSet(this.runner.batchSets.reduce<azdata.ResultSetSummary[]>((p, e) => {
 			if (this.configurationService.getValue<boolean>('sql.results.streaming')) {
 				p = p.concat(e.resultSetSummaries);
 			} else {
@@ -203,8 +203,8 @@ export class GridPanel extends ViewletPanel {
 		}
 	}
 
-	private onResultSet(resultSet: sqlops.ResultSetSummary | sqlops.ResultSetSummary[]) {
-		let resultsToAdd: sqlops.ResultSetSummary[];
+	private onResultSet(resultSet: azdata.ResultSetSummary | azdata.ResultSetSummary[]) {
+		let resultsToAdd: azdata.ResultSetSummary[];
 		if (!Array.isArray(resultSet)) {
 			resultsToAdd = [resultSet];
 		} else {
@@ -236,8 +236,8 @@ export class GridPanel extends ViewletPanel {
 		}
 	}
 
-	private updateResultSet(resultSet: sqlops.ResultSetSummary | sqlops.ResultSetSummary[]) {
-		let resultsToUpdate: sqlops.ResultSetSummary[];
+	private updateResultSet(resultSet: azdata.ResultSetSummary | azdata.ResultSetSummary[]) {
+		let resultsToUpdate: azdata.ResultSetSummary[];
 		if (!Array.isArray(resultSet)) {
 			resultsToUpdate = [resultSet];
 		} else {
@@ -273,7 +273,7 @@ export class GridPanel extends ViewletPanel {
 		}
 	}
 
-	private addResultSet(resultSet: sqlops.ResultSetSummary[]) {
+	private addResultSet(resultSet: azdata.ResultSetSummary[]) {
 		let tables: GridTable<any>[] = [];
 
 		for (let set of resultSet) {
@@ -405,7 +405,7 @@ class GridTable<T> extends Disposable implements IView {
 	private scrolled = false;
 	private visible = false;
 
-	public get resultSet(): sqlops.ResultSetSummary {
+	public get resultSet(): azdata.ResultSetSummary {
 		return this._resultSet;
 	}
 
@@ -416,7 +416,7 @@ class GridTable<T> extends Disposable implements IView {
 
 	constructor(
 		private runner: QueryRunner,
-		private _resultSet: sqlops.ResultSetSummary,
+		private _resultSet: azdata.ResultSetSummary,
 		state: GridTableState,
 		@IContextMenuService private contextMenuService: IContextMenuService,
 		@IInstantiationService private instantiationService: IInstantiationService,
@@ -646,7 +646,7 @@ class GridTable<T> extends Disposable implements IView {
 		}
 	}
 
-	public updateResult(resultSet: sqlops.ResultSetSummary) {
+	public updateResult(resultSet: azdata.ResultSetSummary) {
 		this._resultSet = resultSet;
 		if (this.table && this.visible) {
 			this.dataProvider.length = resultSet.rowCount;

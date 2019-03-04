@@ -6,7 +6,7 @@
 'use strict';
 import { Emitter } from 'vs/base/common/event';
 
-import { ISelectionData } from 'sqlops';
+import { ISelectionData } from 'azdata';
 
 import {
 	IConnectionManagementService,
